@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FoxyBurrow.Core\FoxyBurrow.Core.csproj" />
+    <ProjectReference Include="..\FoxyBurrow.Database\FoxyBurrow.Database.csproj" />
+    <ProjectReference Include="..\FoxyBurrow.Service\FoxyBurrow.Service.csproj" />
+  </ItemGroup>
+
+</Project>
