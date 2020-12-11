@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FoxyBurrow.Controllers
@@ -61,9 +62,14 @@ namespace FoxyBurrow.Controllers
             return View(model);
         }
         [HttpGet]
-        public IActionResult Login()
+        public async Task<IActionResult> Login(string returnUrl)
         {
-            return View();
+            LoginViewModel model = new LoginViewModel()
+            {
+                ReturnUrl = returnUrl,
+                ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList(),
+            };
+            return View(model);
         }
 
         [HttpPost]
@@ -100,6 +106,73 @@ namespace FoxyBurrow.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
+        }
+        [HttpPost]
+        public IActionResult ExternalLogin(string provider, string returnUrl)
+        {
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Account",
+                                    new { ReturnUrl = returnUrl});
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(
+                provider, redirectUrl);
+            return new ChallengeResult(provider, properties);
+        }
+        public async Task<IActionResult> ExternalLoginCallback(
+            string returnUrl = null, string remoteError = null)
+        {
+            returnUrl ??= Url.Content("~/");
+            LoginViewModel model = new LoginViewModel()
+            {
+                ReturnUrl = returnUrl,
+                ExternalLogins = (await _signInManager
+                    .GetExternalAuthenticationSchemesAsync()).ToList()
+            };
+            if(remoteError != null)
+            {
+                ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
+                _logger.LogError($"Error from external provider: {remoteError}");
+                return View("Login", model);
+            }
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if(info ==null)
+            {
+                ModelState.AddModelError(string.Empty, "Error loading external login information.");
+                _logger.LogError("Error loading external login information.");
+
+                return View("Login", model); 
+            }
+            var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider,
+                                        info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+            if(signInResult.Succeeded)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            else
+            {
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                if(email != null)
+                {
+                    var user = await _userManager.FindByEmailAsync(email);
+                    if(user == null)
+                    {
+                        var uinfo = new UserInformation()
+                        {
+                            FirstName = "Unknow",
+                            SecondName = "Foxy"
+                        };
+                        user = new User()
+                        {
+                            UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
+                            Email = info.Principal.FindFirstValue(ClaimTypes.Email),
+                            UserInformation = uinfo
+                        };
+                        await _userManager.CreateAsync(user);
+                    }
+                    await _userManager.AddLoginAsync(user, info);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return LocalRedirect(returnUrl);
+                }
+                return View("/Error/{0}");
+            }
         }
     }
 }
