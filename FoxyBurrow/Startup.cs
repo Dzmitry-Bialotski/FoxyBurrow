@@ -42,7 +42,7 @@ namespace FoxyBurrow
                 opts.Password.RequireUppercase = false;
                 opts.Password.RequireDigit = false;
                 opts.User.RequireUniqueEmail = true;
-                //opts.User.AllowedUserNameCharacters = ".@abcdefghijklmnopqrstuvwxyz"; 
+                opts.SignIn.RequireConfirmedEmail = true;
             })
                 .AddEntityFrameworkStores<EFDbContext>()
                 .AddDefaultTokenProviders();

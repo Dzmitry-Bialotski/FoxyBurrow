@@ -21,8 +21,6 @@ namespace FoxyBurrow.Controllers
 
         public IActionResult Index()
         {
-            _logger.LogError("Ошибочка");
-            _logger.LogInformation("важная информация");
             return View();
         }
 
