@@ -51,6 +51,23 @@ namespace FoxyBurrow.Service.Util.Image
                 _postService.Update(post);
             }
         }
-
+        public string getUserImagePath(User user)
+        {
+            string filename = user?.UserInformation?.ImagePath;
+            if (filename != null)
+            {
+                return "~/img/avatar/" + filename;
+            }
+            return "~/img/avatar/Default.png";
+        }
+        public string getPostImagePath(Post post)
+        {
+            string filename = post?.ImagePath;
+            if (filename != null)
+            {
+                return "~/img/post/" + filename;
+            }
+            return null;
+        }
     }
 }
