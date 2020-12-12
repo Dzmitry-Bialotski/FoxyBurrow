@@ -1,0 +1,9 @@
+﻿@model ProfileViewModel
+@inject IImageService imageService
+@{
+    ViewData["Title"] = "Profile";
+    string imagePath = imageService.getUserImagePath(Model.User);
+}
+
+@Model.User.UserInformation.FirstName
+<img src = "@Url.Content(imagePath)" class="avatar-full-size rounded-circle"/>

@@ -33,8 +33,8 @@ namespace FoxyBurrow
         {
             //Custom Service
             services.AddSingleton<IMailService, MailService>();
-            services.AddSingleton<IImageService, ImageService>();
             services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
+            services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IPostService, PostService>();
             services.AddTransient<IRequestService, RequestService>();
             services.AddTransient<IChatService, ChatService>();
