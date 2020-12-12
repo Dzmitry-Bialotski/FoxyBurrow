@@ -166,6 +166,7 @@ namespace FoxyBurrow.Controllers
                             UserInformation = uinfo
                         };
                         await _userManager.CreateAsync(user);
+                        await _userManager.AddToRoleAsync(user, "user");
                     }
                     await _userManager.AddLoginAsync(user, info);
                     await _signInManager.SignInAsync(user, isPersistent: false);
