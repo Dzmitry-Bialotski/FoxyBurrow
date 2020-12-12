@@ -101,8 +101,25 @@ namespace FoxyBurrow.Controllers
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user != null && !user.EmailConfirmed && (await _userManager.CheckPasswordAsync(user, model.Password)))
                 {
-                    ModelState.AddModelError(string.Empty, "Email is not confirmed yet");
-                    return View(model);
+                    //ModelState.AddModelError(string.Empty, "Email is not confirmed yet");
+                    //return View(model);
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var confirmationLink =
+                        Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token }, Request.Scheme);
+
+
+                    //_logger.LogInformation(confirmationLink);
+                    await _mailService.SendToGmailConfirmLinkAsync(model.Email, "Email Confirm to FoxyBurrow",
+                        confirmationLink);
+
+
+                    _logger.LogInformation($"user {model.Email} register");
+                    await _userManager.AddToRoleAsync(user, "user");
+
+                    ViewBag.Title = "You can`t login";
+                    ViewBag.Message = "Before you can Login, please confirm your " +
+                        "email, by clicking on the confirmation link we have emailed you";
+                    return View("ConfirmEmailInformation");
                 }
                 var result =
                     await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
