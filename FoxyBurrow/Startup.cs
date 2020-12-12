@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Logging;
 using System.IO;
+using FoxyBurrow.Service.Util.Mail;
 
 namespace FoxyBurrow
 {
@@ -31,6 +32,7 @@ namespace FoxyBurrow
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IMailService, MailService>();
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<EFDbContext>(options =>
                options.UseSqlServer(connection, b => b.MigrationsAssembly("FoxyBurrow.Database")));
@@ -42,7 +44,7 @@ namespace FoxyBurrow
                 opts.Password.RequireUppercase = false;
                 opts.Password.RequireDigit = false;
                 opts.User.RequireUniqueEmail = true;
-                opts.SignIn.RequireConfirmedEmail = true;
+                //opts.User.AllowedUserNameCharacters = ".@abcdefghijklmnopqrstuvwxyz"; 
             })
                 .AddEntityFrameworkStores<EFDbContext>()
                 .AddDefaultTokenProviders();
@@ -59,7 +61,7 @@ namespace FoxyBurrow
                 .AddGoogle(options =>
                 {
                     IConfigurationSection googleAuthNSection = Configuration.GetSection("Authentication:Google");
-                    options.ClientId = googleAuthNSection["ClientId"]; ;
+                    options.ClientId = googleAuthNSection["ClientId"];
                     options.ClientSecret = googleAuthNSection["ClientSecret"];
                 });
         }

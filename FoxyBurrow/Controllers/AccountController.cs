@@ -1,5 +1,6 @@
 ﻿using FoxyBurrow.Core.Entity;
 using FoxyBurrow.Models;
+using FoxyBurrow.Service.Util.Mail;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,18 +20,21 @@ namespace FoxyBurrow.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<AccountController> _logger;
+        private readonly IMailService _mailService;
 
         public AccountController(UserManager<User> userManager, SignInManager<User> signInManager,
-                 RoleManager<IdentityRole> roleManager, ILogger<AccountController> logger)
+                 RoleManager<IdentityRole> roleManager, ILogger<AccountController> logger, IMailService mailService )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _logger = logger;
+            _mailService = mailService;
         }
         [HttpGet]
         public IActionResult Register()
         {
+            //await _mailService.SendToGmailConfirmLinkAsync("dimasiandro@gmail.com","тестим", "https://localhost:44302/Account/ConfirmEmail?userId=9073e1f0-2478-499a-8932-e5ed1db82da1&token=CfDJ8LD96Ep0jLBMk%2FQuDHZF9pymSHo0%2FP9ddP6okgaYaNmKg4skkO8AX0ap41iX46TTgNBZlAmdAGR9a4p9%2FhhefVod%2Fhw1CsbU3Ayh3tPWxTM83bh%2BmYCMVpvOthvgidRUuXBL4K%2FMdaRv0aIJxjv11E2RnYZNCpporUY0mBMRT7J8fQcptkOBgkiDoYhenfvw4wB7bgfELthWqbSnlFDv%2BmydNNPLcNqolEoI5RZG5ikS7hRjlSy3GAGay6N00vc1Jw%3D%3D");
             return View();
         }
         [HttpPost]
@@ -48,7 +52,13 @@ namespace FoxyBurrow.Controllers
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var confirmationLink = 
                         Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token }, Request.Scheme);
-                    _logger.LogInformation(confirmationLink);
+
+
+                    //_logger.LogInformation(confirmationLink);
+                    await _mailService.SendToGmailConfirmLinkAsync(model.Email, "Email Confirm to FoxyBurrow",
+                        confirmationLink);
+
+
                     _logger.LogInformation($"user {model.Email} register");
                     await _userManager.AddToRoleAsync(user, "user");
 

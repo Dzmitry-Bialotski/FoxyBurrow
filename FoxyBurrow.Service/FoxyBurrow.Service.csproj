@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="2.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\FoxyBurrow.Core\FoxyBurrow.Core.csproj" />
     <ProjectReference Include="..\FoxyBurrow.Database\FoxyBurrow.Database.csproj" />
   </ItemGroup>
