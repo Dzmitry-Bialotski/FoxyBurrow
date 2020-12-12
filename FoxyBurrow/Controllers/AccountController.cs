@@ -45,10 +45,19 @@ namespace FoxyBurrow.Controllers
 
                 if (result.Succeeded)
                 {
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var confirmationLink = 
+                        Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token }, Request.Scheme);
+                    _logger.LogInformation(confirmationLink);
                     _logger.LogInformation($"user {model.Email} register");
                     await _userManager.AddToRoleAsync(user, "user");
-                    await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Index", "Home");
+
+                    ViewBag.Title = "Registrarion successful";
+                    ViewBag.Message = "Before you can Login, please confirm your " +
+                        "email, by clicking on the confirmation link we have emailed you";
+                    return View("ConfirmEmailInformation");
+                    //await _signInManager.SignInAsync(user, false);
+                    //return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -181,6 +190,28 @@ namespace FoxyBurrow.Controllers
                 }
                 return View("/Error/{0}");
             }
+        }
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if(userId == null || token == null)
+            {
+                RedirectToAction("index", "home");
+            }
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"The User ID {userId} is invalid";
+                return View("NotFound");
+            }
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded)
+            {
+                return View();
+            }
+            ViewBag.ErrorTitle = "Email can not be confirmed :(";
+            return View("Error");
         }
     }
 }
