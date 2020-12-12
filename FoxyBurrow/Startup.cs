@@ -15,6 +15,7 @@ using FoxyBurrow.Service.Util.Mail;
 using FoxyBurrow.Database.Repository;
 using FoxyBurrow.Service.Interface;
 using FoxyBurrow.Service.Impl;
+using FoxyBurrow.Service.Util.Image;
 
 namespace FoxyBurrow
 {
@@ -32,6 +33,7 @@ namespace FoxyBurrow
         {
             //Custom Service
             services.AddSingleton<IMailService, MailService>();
+            services.AddSingleton<IImageService, ImageService>();
             services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
             services.AddTransient<IPostService, PostService>();
             services.AddTransient<IRequestService, RequestService>();

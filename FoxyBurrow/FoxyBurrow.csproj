@@ -21,4 +21,11 @@
     <ProjectReference Include="..\FoxyBurrow.Service\FoxyBurrow.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\avatar\" />
+    <Folder Include="wwwroot\img\post\" />
+    <Folder Include="wwwroot\img\logo\" />
+    <Folder Include="wwwroot\img\background\" />
+  </ItemGroup>
+
 </Project>
