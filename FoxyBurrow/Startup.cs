@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using FoxyBurrow.Database.DbContext;
 using Microsoft.EntityFrameworkCore;
 using FoxyBurrow.Core.Entity;
@@ -17,6 +12,9 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Logging;
 using System.IO;
 using FoxyBurrow.Service.Util.Mail;
+using FoxyBurrow.Database.Repository;
+using FoxyBurrow.Service.Interface;
+using FoxyBurrow.Service.Impl;
 
 namespace FoxyBurrow
 {
@@ -32,7 +30,16 @@ namespace FoxyBurrow
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IMailService, MailService>();
+            //Custom Service
+            services.AddSingleton<IMailService, MailService>();
+            services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
+            services.AddTransient<IPostService, PostService>();
+            services.AddTransient<IRequestService, RequestService>();
+            services.AddTransient<IChatService, ChatService>();
+            services.AddTransient<IMessageService, MessageService>();
+            services.AddTransient<ICommentService, CommentService>();
+            services.AddTransient<IUserInformationService, UserInformationService>();
+
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<EFDbContext>(options =>
                options.UseSqlServer(connection, b => b.MigrationsAssembly("FoxyBurrow.Database")));

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace FoxyBurrow.Database.Repositpry
+namespace FoxyBurrow.Database.Repository
 {
     public class EFRepository<T> : IRepository<T> where T : Base
     {

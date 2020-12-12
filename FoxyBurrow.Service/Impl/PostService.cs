@@ -1,5 +1,5 @@
 ﻿using FoxyBurrow.Core.Entity;
-using FoxyBurrow.Database.Repositpry;
+using FoxyBurrow.Database.Repository;
 using FoxyBurrow.Service.Interface;
 using System;
 using System.Collections.Generic;

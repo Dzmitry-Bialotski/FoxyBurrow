@@ -1,6 +1,6 @@
 ﻿using FoxyBurrow.Core.Entity;
 using FoxyBurrow.Database.DbContext;
-using FoxyBurrow.Database.Repositpry;
+using FoxyBurrow.Database.Repository;
 using FoxyBurrow.Service.Impl;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
