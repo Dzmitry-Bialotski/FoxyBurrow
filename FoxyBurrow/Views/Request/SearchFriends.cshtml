@@ -19,10 +19,13 @@ else
     @foreach (User user in Model.Users)
     {
         string imagePath = imageService.getUserImagePath(user);
-        <img src="@Url.Content(imagePath)" class="avatar-middle-size rounded-circle" />
-        <div class="profile-name">
-            @user.UserInformation.FirstName  @user.UserInformation.SecondName
-        </div>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id=@user?.Id>
+            <img src="@Url.Content(imagePath)" class="avatar-middle-size rounded-circle" />
+            <div class="profile-name">
+                @user.UserInformation.FirstName  @user.UserInformation.SecondName
+            </div>
+        </a>
+
     }
 </div>
 }

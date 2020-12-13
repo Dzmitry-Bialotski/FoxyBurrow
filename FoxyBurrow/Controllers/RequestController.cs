@@ -18,10 +18,44 @@ namespace FoxyBurrow.Controllers
             _userService = userService;
             _requestService = requestService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Friends()
+        {
+            User user = await _userService.GetAsync(User);
+            var model = new FriendsViewModel
+            {
+                Users = _userService.GetFriends(user)
+            };
+            return View(model);
+        }
+        public async Task<IActionResult> Followers()
+        {
+            User user = await _userService.GetAsync(User);
+            var model = new FriendsViewModel
+            {
+                Users = _userService.GetFollowers(user)
+            };
+            return View(model);
+        }
+        public async Task<IActionResult> Following()
+        {
+            User user = await _userService.GetAsync(User);
+            var model = new FriendsViewModel
+            {
+                Users = _userService.GetFollowing(user)
+            };
+            return View(model);
+        }
+        public async Task<IActionResult> AddFriend()
         {
             return View();
         }
+        public async Task<IActionResult> DeleteFriend()
+        {
+            return View();
+        }
+
+
+
         [HttpGet]
         public async Task<IActionResult> SearchFriends(string request)
         {

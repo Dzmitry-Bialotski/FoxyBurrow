@@ -18,8 +18,6 @@ namespace FoxyBurrow.Service.Interface
         void Update(Request request);
         void Remove(long id);
         IQueryable<User> GetUserFriends(User user);
-        bool UserInFriendsList(IQueryable<User> friends, User user);
-        bool IsRequestExistence(User user1, User user2);
 
     }
 }

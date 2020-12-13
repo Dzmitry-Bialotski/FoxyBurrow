@@ -15,5 +15,8 @@ namespace FoxyBurrow.Service.Interface
         Task<User> GetAsyncWithPosts(ClaimsPrincipal User);
         Task<User> GetAsyncWithPosts(string Id);
         Task<IEnumerable<User>> FindOtherUsers(ClaimsPrincipal User, string request);
+        ICollection<User> GetFriends(User user);
+        ICollection<User> GetFollowers(User user);
+        ICollection<User> GetFollowing(User user);
     }
 }

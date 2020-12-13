@@ -1,0 +1,13 @@
+﻿@model ICollection<User>
+@inject IImageService imageService
+@inject IUserService userService
+@foreach (User user in Model)
+{
+    string imagePath = imageService.getUserImagePath(await userService.GetAsync(user.Id));
+    <div class="border rounded mb-1">
+        <a class="row text-light" asp-controller="Profile" asp-action="Index" asp-route-id=@user.Id>
+            <img src="@Url.Content(imagePath)" class="avatar-full-size rounded-circle" asp-append-version="true" />
+            <h3 style="margin-top : 50px"> @user.UserInformation.FirstName   @user.UserInformation.SecondName </h3>
+        </a>
+    </div>
+}

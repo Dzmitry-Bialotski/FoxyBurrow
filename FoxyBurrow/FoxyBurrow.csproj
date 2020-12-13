@@ -25,6 +25,7 @@
     <Folder Include="wwwroot\img\avatar\" />
     <Folder Include="wwwroot\img\post\" />
     <Folder Include="wwwroot\img\background\" />
+    <Folder Include="Hubs\" />
   </ItemGroup>
 
 </Project>
