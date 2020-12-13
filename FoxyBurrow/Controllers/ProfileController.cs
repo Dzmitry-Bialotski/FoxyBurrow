@@ -1,6 +1,7 @@
 ﻿using FoxyBurrow.Core.Entity;
 using FoxyBurrow.Models;
 using FoxyBurrow.Service.Interface;
+using FoxyBurrow.Service.Util.Comparator;
 using FoxyBurrow.Service.Util.Image;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,8 @@ namespace FoxyBurrow.Controllers
         {
             User currentUser = await _userService.GetAsync(User);
             User user = await _userService.GetAsyncWithPosts(id);
+            PostComparer pc = new PostComparer();
+            user.Posts.Sort(pc);
             ProfileViewModel model = new ProfileViewModel
             {
                 User = user,

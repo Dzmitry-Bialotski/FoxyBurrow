@@ -1,5 +1,6 @@
 ﻿using FoxyBurrow.Core.Entity;
 using FoxyBurrow.Service.Interface;
+using FoxyBurrow.Service.Util.Comparator;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -52,7 +53,10 @@ namespace FoxyBurrow.Service.Impl
         {
             User user = await _userManager.GetUserAsync(User);
             user.UserInformation = _userInformationService.Get(user);
-            user.Posts = _postService.GetAllWithComments(user).ToList();
+            List<Post> posts = _postService.GetAllWithComments(user).ToList();
+            PostComparer pc = new PostComparer();
+            posts.Sort(pc);
+            user.Posts = posts;
             return user;
         }
     }
