@@ -39,6 +39,18 @@
                             }
                             <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id=@user?.Id>Profile</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" role="button" data-toggle="dropdown" 
+                               aria-haspopup="true" aria-expanded="false">Friends</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" asp-area="" asp-controller="Request" asp-action="Friends"> Friends </a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Request" asp-action="Followers"> Followers </a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Request" asp-action="Following"> Following </a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Request" asp-action="SearchFriends">Search Friends</a>
+                        </li>
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         @if (signInManager.IsSignedIn(User))

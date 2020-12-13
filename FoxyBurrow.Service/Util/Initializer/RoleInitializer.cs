@@ -33,6 +33,11 @@ namespace FoxyBurrow.Service.Util.Initializer
             if (await userManager.FindByNameAsync(adminEmail) == null)
             {
                 User admin = new User { Email = adminEmail, UserName = adminEmail, EmailConfirmed = true};
+                admin.UserInformation = new UserInformation()
+                {
+                    FirstName = "Admin",
+                    SecondName = "FoxyBurrow",
+                };
                 IdentityResult result = await userManager.CreateAsync(admin, password);
                 if (result.Succeeded)
                 {

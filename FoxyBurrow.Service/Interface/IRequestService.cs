@@ -12,8 +12,8 @@ namespace FoxyBurrow.Service.Interface
         Request Get(User user1, User user2);
         IQueryable<Request> GetAll();
         IQueryable<Request> GetAllByUser(User user);
-        IQueryable<Request> GetAllOutgoingByUser(User user);
-        IQueryable<Request> GetAllIncomingByUser(User user);
+        IQueryable<User> GetAllOutgoingByUser(User user);
+        IQueryable<User> GetAllIncomingByUser(User user);
         void Add(Request request);
         void Update(Request request);
         void Remove(long id);

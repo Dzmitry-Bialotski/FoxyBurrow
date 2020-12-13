@@ -2,6 +2,7 @@
 using FoxyBurrow.Service.Interface;
 using FoxyBurrow.Service.Util.Comparator;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,6 +59,30 @@ namespace FoxyBurrow.Service.Impl
             posts.Sort(pc);
             user.Posts = posts;
             return user;
+        }
+        public async Task<IEnumerable<User>> FindOtherUsers(ClaimsPrincipal User, string request)
+        {
+            User user = await _userManager.GetUserAsync(User);
+            var users = _userManager.Users.Include(u => u.UserInformation).Where(u => u.Id != user.Id).ToList();
+            if(string.IsNullOrEmpty(request))
+            {
+                return users;
+            }
+            var words = request.Split();
+            var cmp = StringComparison.OrdinalIgnoreCase;
+            users = (words.Count()) switch
+            {
+                0 => users,
+                1 => users.Where(u => u.UserInformation.FirstName.StartsWith(request, cmp) 
+                                    || u.UserInformation.SecondName.StartsWith(request, cmp)).ToList(),
+                2 => users.Where(u => u.UserInformation.FirstName.StartsWith(words[0], cmp)
+                                    && u.UserInformation.SecondName.StartsWith(words[1], cmp)
+                                    || u.UserInformation.FirstName.StartsWith(words[1], cmp)
+                                    && u.UserInformation.SecondName.StartsWith(words[0], cmp)
+                                    ).ToList(),
+                _ => null,
+            };
+            return users;
         }
     }
 }

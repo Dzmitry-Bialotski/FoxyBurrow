@@ -2,6 +2,7 @@
 using FoxyBurrow.Core.Enum;
 using FoxyBurrow.Database.Repository;
 using FoxyBurrow.Service.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,27 +46,26 @@ namespace FoxyBurrow.Service.Impl
 
         }
 
-        public IQueryable<Request> GetAllIncomingByUser(User user)
+        public IQueryable<User> GetAllIncomingByUser(User user)
         {
-            return _repository.GetAll().Where(r => r.UserSender.Equals(user)
-            && r.RequestType == RequestType.WAITING);
+            return _repository.GetAll().Where(r => r.UserReceiver.Id == user.Id
+            && r.RequestType == RequestType.WAITING).Select(r => r.UserReceiver).Include(u => u.UserInformation);
         }
 
-        public IQueryable<Request> GetAllOutgoingByUser(User user)
+        public IQueryable<User> GetAllOutgoingByUser(User user)
         {
-            return _repository.GetAll().Where(r => r.UserReceiver.Equals(user) 
-            && r.RequestType == RequestType.WAITING);
-
+            return _repository.GetAll().Where(r => r.UserSender.Id == user.Id
+            && r.RequestType == RequestType.WAITING).Select(r => r.UserSender).Include(u => u.UserInformation);
         }
 
         public IQueryable<User> GetUserFriends(User user)
         {
             return _repository.GetAll()
                  .Where(r => r.UserSender.Equals(user) && r.RequestType == RequestType.CONFIRMED)
-                 .Select(r => r.UserReceiver)
+                 .Select(r => r.UserReceiver).Include(u => u.UserInformation)
                  .Union(_repository.GetAll()
                  .Where(r => r.UserReceiver.Equals(user) && r.RequestType == RequestType.CONFIRMED)
-                 .Select(r => r.UserSender));
+                 .Select(r => r.UserSender).Include(u => u.UserInformation));
         }
 
         public bool IsRequestExistence(User user1, User user2)
