@@ -1,9 +1,110 @@
 ﻿@model ProfileViewModel
 @inject IImageService imageService
+@inject IUserService userService
 @{
     ViewData["Title"] = "Profile";
     string imagePath = imageService.getUserImagePath(Model.User);
+    UserInformation uinfo = Model.User.UserInformation;
+    bool isCurrentUser = Model.User.Id == Model.currentUserId;
 }
 
-@Model.User.UserInformation.FirstName
-<img src = "@Url.Content(imagePath)" class="avatar-full-size rounded-circle"/>
+<div class="container">
+    <div class="profile">
+        <div class="profile-img-section">
+            <img src="@Url.Content(imagePath)" class="avatar-full-size rounded-circle" />
+        </div>
+        <div class="profile-info">
+            <div class="profile-name">
+                @uinfo.FirstName  @uinfo.SecondName
+            </div>
+            <div class="profile-status">
+                @uinfo.Status
+            </div>
+            <div class="profile-info-section">
+                <div class="profile-info-key"> Birthday </div>
+                <div class="profile-info-value"> @uinfo.Birthday </div>
+            </div>
+            <div class="profile-info-section">
+                <div class="profile-info-key"> City </div>
+                <div class="profile-info-value"> @uinfo.City </div>
+            </div>
+            <div class="profile-info-section">
+                <div class="profile-info-key"> Gender </div>
+                <div class="profile-info-value"> @uinfo.Gender </div>
+            </div>
+            <div class="profile-info-section">
+                <div class="profile-info-key"> Place of study </div>
+                <div class="profile-info-value"> @uinfo.PlaceOfStudy </div>
+            </div>
+            <div class="profile-info-section">
+                <div class="profile-info-key"> Place of work </div>
+                <div class="profile-info-value"> @uinfo.PlaceOfWork </div>
+            </div>
+            <div class="profile-info-section">
+                <div class="profile-info-key"> About Myself </div>
+                <div class="profile-info-value"> @uinfo.AboutMyself </div>
+            </div>
+            @if (Model.User.Id == Model.currentUserId)
+            {
+                <a class="btn btn-primary m-1" asp-action="EditProfile" asp-controller="Profile" 
+                   asp-route-id="@Model.User.Id"> Edit Profile </a>
+            }
+        </div>
+    </div>
+    <div class="post-section">
+        <div class="write-post-wrapper">
+            <form>
+                <textarea class="post-textarea-field">
+
+                </textarea>
+                <input />
+                <button class="btn btn-primary"> Write Post</button>
+            </form>
+        </div>
+        @foreach(Post post in Model.User.Posts)
+        {
+            <div class="post">
+                <div class="post-image-section">
+                    <img />
+                </div>
+                <div class="post-text">
+                    @post.Text
+                </div>
+                <div class="post-date">
+                    @post.MessageDate
+                </div>
+                <form>
+                    <button class="btn btn-danger">Delete Post</button>
+                </form>
+                <div class="comment-section">
+                    <div class="write-comment-wrapper">
+                        <form>
+                            <input class="post-textarea-field"/>
+                            <button class="btn btn-primary"> Write Comment</button>
+                        </form>
+                    </div>
+                </div>
+                @foreach (Comment comment in post.Comments)
+                {
+                    comment.User = await userService.GetAsync(comment.UserId);
+                    UserInformation commentUserInfo = comment.User.UserInformation;
+                    <div class="comment">
+                        <div class="comment-name">
+                            @commentUserInfo.FirstName @commentUserInfo.SecondName
+                        </div>
+                        <div class="comment-text">
+                            @comment.Text
+                        </div>
+                        <div class="comment-date">
+                            @comment.MessageDate
+                        </div>
+                        <form>
+                            <button class="btn btn-danger">Delete Comment</button>
+                        </form>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+

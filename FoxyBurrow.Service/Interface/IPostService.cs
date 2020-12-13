@@ -10,7 +10,7 @@ namespace FoxyBurrow.Service.Interface
     {
         Post Get(long id);
         IQueryable<Post> GetAll();
-        IQueryable<Post> GetAll(User user);
+        IQueryable<Post> GetAllWithComments(User user);
         void Add(Post post);
         void Update(Post post);
         void Remove(long id);

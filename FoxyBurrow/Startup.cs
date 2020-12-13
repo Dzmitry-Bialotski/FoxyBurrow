@@ -41,6 +41,7 @@ namespace FoxyBurrow
             services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<IUserInformationService, UserInformationService>();
+            services.AddTransient<IUserService, UserService>();
 
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<EFDbContext>(options =>

@@ -1,0 +1,108 @@
+﻿@model ProfileEditViewModel
+@inject IImageService imageService
+@inject IUserService userService
+@{
+    ViewData["Title"] = "Edit Profile";
+    string imagePath = imageService.getUserImagePath(await userService.GetAsync(Model.Id));
+}
+<h1> Edit Profile </h1>
+<form enctype="multipart/form-data" asp-controller="Profile" asp-action="EditProfile" method="post" class="mt-3">
+    <input hidden asp-for="Id">
+    <input hidden asp-for="ImagePath">
+    <div class="form-group row">
+        <label asp-for="FirstName" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="FirstName" class="form-control" placeholder="First Name" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="SecondName" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="SecondName" class="form-control" placeholder="Second Name" />
+            <span asp-validation-for="SecondName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Gender" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <select asp-for="Gender" class="custom-select mr-sm-2"
+                    asp-items="Html.GetEnumSelectList<Gender>()">
+            </select>
+            <span asp-validation-for="Gender" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="City" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="City" class="form-control" placeholder="City" />
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="PlaceOfStudy" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="PlaceOfStudy" class="form-control" placeholder="Place Of Study" />
+            <span asp-validation-for="PlaceOfStudy" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="PlaceOfWork" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="PlaceOfWork" class="form-control" placeholder="Place Of Work" />
+            <span asp-validation-for="PlaceOfWork" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="AboutMyself" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="AboutMyself" class="form-control" placeholder="AboutMyself" />
+            <span asp-validation-for="AboutMyself" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Status" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="Status" class="form-control" placeholder="Status" />
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Birthday" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="Birthday" class="form-control" placeholder="Birthday" />
+            <span asp-validation-for="Birthday" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Image" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <div class="custom-file">
+                <input multiple asp-for="Image" class="form-control  custom-file-input" />
+                <label class="custom-file-label"> Click here to change image</label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row col-sm-4 offset-4">
+        <img src="@Url.Content(imagePath)" class="avatar-full-size rounded-circle" asp-append-version="true" />
+
+    </div>
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary"> Edit Profile </button>
+            <a asp-controller="Profile" asp-action="Index" class="btn btn-primary"> Cancel</a>
+        </div>
+    </div>
+    @section Scripts {
+        <script>
+            $(document).ready(function () {
+                $('.custom-file-input').on("change", function () {
+                    var filename = $(this).val().split("\\").pop();
+                    $(this).next('.custom-file-label').html(filename);
+                });
+            });
+        </script>
+    }
+</form>

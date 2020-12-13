@@ -8,7 +8,7 @@ namespace FoxyBurrow.Models
 {
     public class ProfileViewModel
     {
-        public string Id { get; set; }
         public User User { get; set; }
+        public string currentUserId { get; set; }
     }
 }

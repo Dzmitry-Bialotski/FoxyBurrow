@@ -11,10 +11,12 @@ namespace FoxyBurrow.Service.Impl
     public class PostService : IPostService
     {
         private readonly IRepository<Post> _repository;
+        private readonly ICommentService _commentService;
 
-        public PostService(IRepository<Post> repository)
+        public PostService(IRepository<Post> repository, ICommentService commentService)
         {
             _repository = repository;
+            _commentService = commentService;
         }
         public void Add(Post post)
         {
@@ -31,9 +33,14 @@ namespace FoxyBurrow.Service.Impl
             return _repository.GetAll();
         }
 
-        public IQueryable<Post> GetAll(User user)
+        public IQueryable<Post> GetAllWithComments(User user)
         {
-            return _repository.GetAll().Where(p => p.User.Equals(user));
+            IQueryable<Post> posts = _repository.GetAll().Where(p => p.User.Equals(user));
+            foreach(Post post in posts)
+            {
+                post.Comments = _commentService.GetAll(post).ToList();
+            }
+            return posts;
         }
 
         public void Remove(long id)
