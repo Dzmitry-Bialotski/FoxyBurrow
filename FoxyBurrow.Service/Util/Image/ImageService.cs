@@ -25,10 +25,10 @@ namespace FoxyBurrow.Service.Util.Image
         {
             if (image != null && user?.UserInformation != null)
             {
-                string avatarFolder = Path.Combine(_hostingEnvironment.WebRootPath, "img");
-                string imgFolder = Path.Combine(avatarFolder, "avatar");
+                string imgFolder = Path.Combine(_hostingEnvironment.WebRootPath, "img");
+                string avatarFolder = Path.Combine(imgFolder, "avatar");
                 string uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
-                string filePath = Path.Combine(imgFolder, uniqueFileName);
+                string filePath = Path.Combine(avatarFolder, uniqueFileName);
 
                 image.CopyTo(new FileStream(filePath, FileMode.Create));
 
@@ -40,10 +40,10 @@ namespace FoxyBurrow.Service.Util.Image
         {
             if (image != null && post != null)
             {
-                string avatarFolder = Path.Combine(_hostingEnvironment.WebRootPath, "img");
-                string imgFolder = Path.Combine(avatarFolder, "post");
+                string imgFolder = Path.Combine(_hostingEnvironment.WebRootPath, "img");
+                string postFolder = Path.Combine(imgFolder, "post");
                 string uniqueFileName = Guid.NewGuid().ToString() + "_" + image.FileName;
-                string filePath = Path.Combine(imgFolder, uniqueFileName);
+                string filePath = Path.Combine(postFolder, uniqueFileName);
 
                 image.CopyTo(new FileStream(filePath, FileMode.Create));
 

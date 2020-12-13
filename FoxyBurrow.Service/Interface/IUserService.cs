@@ -12,6 +12,7 @@ namespace FoxyBurrow.Service.Interface
     {
         Task<User> GetAsync(ClaimsPrincipal User);
         Task<User> GetAsync(string Id);
+        Task<User> GetAsyncWithPosts(ClaimsPrincipal User);
         Task<User> GetAsyncWithPosts(string Id);
     }
 }

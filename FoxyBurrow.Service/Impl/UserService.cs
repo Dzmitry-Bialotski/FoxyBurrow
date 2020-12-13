@@ -48,5 +48,12 @@ namespace FoxyBurrow.Service.Impl
             user.Posts = _postService.GetAllWithComments(user).ToList();
             return user;
         }
+        public async Task<User> GetAsyncWithPosts(ClaimsPrincipal User)
+        {
+            User user = await _userManager.GetUserAsync(User);
+            user.UserInformation = _userInformationService.Get(user);
+            user.Posts = _postService.GetAllWithComments(user).ToList();
+            return user;
+        }
     }
 }

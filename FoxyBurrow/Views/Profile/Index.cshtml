@@ -1,6 +1,7 @@
 ﻿@model ProfileViewModel
 @inject IImageService imageService
 @inject IUserService userService
+@inject IPostService postService
 @{
     ViewData["Title"] = "Profile";
     string imagePath = imageService.getUserImagePath(Model.User);
@@ -53,29 +54,40 @@
     </div>
     <div class="post-section">
         <div class="write-post-wrapper">
-            <form>
-                <textarea class="post-textarea-field">
-
-                </textarea>
-                <input />
-                <button class="btn btn-primary"> Write Post</button>
-            </form>
+            @if (Model.User.Id == Model.currentUserId)
+            {
+                <a class="btn btn-primary m-1" asp-action="Create" asp-controller="Post"
+                   asp-route-userId="@Model.User.Id"> Write new post </a>
+            }
         </div>
         @foreach(Post post in Model.User.Posts)
         {
             <div class="post">
-                <div class="post-image-section">
-                    <img />
-                </div>
+                @{
+                    string postImagePath = imageService.getPostImagePath(postService.Get(post.Id));
+                }
+                @if (postImagePath != null)
+                {
+                    <div class="post-image-section">
+                        <div class="form-group row col-sm-4 offset-4">
+                            <img src="@Url.Content(postImagePath)" class="post-full-size" asp-append-version="true" />
+                        </div>
+                    </div>
+                }
+
                 <div class="post-text">
                     @post.Text
                 </div>
                 <div class="post-date">
                     @post.MessageDate
                 </div>
-                <form>
-                    <button class="btn btn-danger">Delete Post</button>
-                </form>
+                @if (Model.User.Id == Model.currentUserId)
+                {
+                    <a class="btn btn-primary m-1" asp-action="Edit" asp-controller="Post"
+                        asp-route-postId="@post.Id"> Edit post </a>
+                    <a class="btn btn-danger m-1" asp-action="Delete" asp-controller="Post"
+                       asp-route-id="@post.Id"> Delete Post </a>
+                }
                 <div class="comment-section">
                     <div class="write-comment-wrapper">
                         <form>
