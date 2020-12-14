@@ -3,6 +3,7 @@ using FoxyBurrow.Models;
 using FoxyBurrow.Service.Interface;
 using FoxyBurrow.Service.Util.Image;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,14 @@ namespace FoxyBurrow.Controllers
         private readonly IUserService _userService;
         private readonly IImageService _imageService;
         private readonly IPostService _postService;
+        private readonly ILogger<HomeController> _logger;
         public PostController(IUserInformationService userInformationService, IPostService postService,
-                            IUserService userService, IImageService imageService)
+                            IUserService userService, IImageService imageService, ILogger<HomeController> logger)
         {
             _userService = userService;
             _imageService = imageService;
             _postService = postService;
+            _logger = logger;
         }
         [HttpGet]
         public IActionResult Create(string userId)
@@ -34,6 +37,10 @@ namespace FoxyBurrow.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(PostViewModel model)
         {
+            if (string.IsNullOrEmpty(model.Text))
+            {
+                return RedirectToAction("Index", "Profile", new { id = model.UserId });
+            }
             User user = await _userService.GetAsync(User);
             Post post = new Post
             {
@@ -42,6 +49,8 @@ namespace FoxyBurrow.Controllers
                 UserId = user.Id,
             };
             _postService.Add(post);
+            _imageService.StorePostImage(post, model.Image);
+            _postService.Update(post);
             return RedirectToAction("Index","Profile",new { id = model.UserId});
         }
         [HttpGet]
@@ -64,6 +73,10 @@ namespace FoxyBurrow.Controllers
         [HttpPost]
         public IActionResult Edit(PostViewModel model)
         {
+            if (string.IsNullOrEmpty(model.Text))
+            {
+                return Redirect("Error");
+            }
             Post post = _postService.Get(model.PostId);
             if(post == null)
             {

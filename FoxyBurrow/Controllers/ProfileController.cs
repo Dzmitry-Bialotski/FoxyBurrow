@@ -5,6 +5,7 @@ using FoxyBurrow.Service.Util.Comparator;
 using FoxyBurrow.Service.Util.Image;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,18 +18,21 @@ namespace FoxyBurrow.Controllers
         private readonly IUserInformationService _userInformationService;
         private readonly IUserService _userService;
         private readonly IImageService _imageService;
+        private readonly ILogger<HomeController> _logger;
         public ProfileController(IUserInformationService userInformationService,
-                            IUserService userService, IImageService imageService)
+                            IUserService userService, IImageService imageService, ILogger<HomeController> logger)
         {
             _userInformationService = userInformationService;
             _userService = userService;
             _imageService = imageService;
+            _logger = logger;
         }
 
         public async Task<IActionResult> IndexAsync(string id)
         {
             User currentUser = await _userService.GetAsync(User);
-            User user = await _userService.GetAsyncWithPosts(id);
+            User user = id != null ? await _userService.GetAsyncWithPosts(id) 
+                                   : await _userService.GetAsyncWithPosts(User);
             PostComparer pc = new PostComparer();
             user.Posts.Sort(pc);
             ProfileViewModel model = new ProfileViewModel

@@ -2,6 +2,7 @@
 using FoxyBurrow.Models;
 using FoxyBurrow.Service.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,13 @@ namespace FoxyBurrow.Controllers
     {
         private readonly IUserService _userService;
         private readonly IRequestService _requestService;
-        public RequestController(IUserService userService, IRequestService requestService)
+        private readonly ILogger<HomeController> _logger;
+        public RequestController(IUserService userService, IRequestService requestService,
+            ILogger<HomeController> logger)
         {
             _userService = userService;
             _requestService = requestService;
+            _logger = logger;
         }
         public async Task<IActionResult> Friends()
         {

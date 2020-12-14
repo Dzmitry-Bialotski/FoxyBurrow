@@ -2,11 +2,13 @@
 @inject IImageService imageService
 @inject IUserService userService
 @inject IPostService postService
+@inject IRequestService requestService
 @{
     ViewData["Title"] = "Profile";
     string imagePath = imageService.getUserImagePath(Model.User);
     UserInformation uinfo = Model.User.UserInformation;
     bool isCurrentUser = Model.User.Id == Model.currentUserId;
+    User currentUser = await userService.GetAsync(User);
 }
 
 <div class="container">
@@ -92,14 +94,17 @@
                     <a class="btn btn-danger m-1" asp-action="Delete" asp-controller="Post"
                        asp-route-id="@post.Id"> Delete Post </a>
                 }
-                <div class="comment-section">
-                    <div class="write-comment-wrapper">
-                        <form>
-                            <input class="post-textarea-field"/>
+                @if(requestService.IsFriend(Model.User,currentUser) || isCurrentUser)
+                {
+                 <div class="write-comment-wrapper">
+                        <form asp-action="AddComment" asp-controller="Comment">
+                            <input asp-for="UserToReturnId" value=@Model.User.Id type="hidden">
+                            <input asp-for="PostId" value=@post.Id type="hidden">
+                            <input class="comment-text-input" asp-for="Text" />
                             <button class="btn btn-primary"> Write Comment</button>
                         </form>
-                    </div>
                 </div>
+                }
                 @foreach (Comment comment in post.Comments)
                 {
                     comment.User = await userService.GetAsync(comment.UserId);
@@ -114,9 +119,14 @@
                         <div class="comment-date">
                             @comment.MessageDate
                         </div>
-                        <form>
+                        @if (currentUser.Id == comment.UserId || isCurrentUser)
+                        {
+                         <form asp-action="DeleteComment" asp-controller="Comment">
+                            <input asp-for="UserToReturnId" value=@Model.User.Id type="hidden">
+                            <input asp-for="CommentId" value=@comment.Id type="hidden">
                             <button class="btn btn-danger">Delete Comment</button>
-                        </form>
+                         </form>
+                        }
                     </div>
                 }
             </div>
