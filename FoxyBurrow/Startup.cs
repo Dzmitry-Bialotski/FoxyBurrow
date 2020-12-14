@@ -16,6 +16,7 @@ using FoxyBurrow.Database.Repository;
 using FoxyBurrow.Service.Interface;
 using FoxyBurrow.Service.Impl;
 using FoxyBurrow.Service.Util.Image;
+using FoxyBurrow.Hubs;
 
 namespace FoxyBurrow
 {
@@ -74,6 +75,7 @@ namespace FoxyBurrow
                     options.ClientId = googleAuthNSection["ClientId"];
                     options.ClientSecret = googleAuthNSection["ClientSecret"];
                 });
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -104,6 +106,8 @@ namespace FoxyBurrow
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<ChatHub>("/Chat");
+                endpoints.MapHub<CommentHub>("/Profile");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
