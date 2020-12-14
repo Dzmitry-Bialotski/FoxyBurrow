@@ -25,10 +25,10 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Profile" asp-action="Index"  asp-route-id=@user?.Id>
+                <a class="navbar-brand" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id=@user?.Id>
                     <img src="@Url.Content("~/img/logo/Logo.ico")" class="logo-image rounded-circle" />
                 </a>
-                <a class="navbar-nav text-light" asp-area="" asp-controller="Profile" asp-action="Index"  asp-route-id=@user?.Id>
+                <a class="navbar-nav text-light" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id=@user?.Id>
                     FoxyBurrow
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -41,7 +41,7 @@
                             <a class="nav-link text-light" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id=@user?.Id>Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Chat" asp-action="Index">Chats</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Chat" asp-action="List">Chats</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-light" role="button" data-toggle="dropdown"
@@ -59,12 +59,12 @@
                     <ul class="navbar-nav ml-auto">
                         @if (signInManager.IsSignedIn(User))
                         {
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id=@user?.Id>
-                                <img src="@Url.Content(imagePath)" class="avatar-small-size rounded-circle" />
-                                @User.Identity.Name
-                            </a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id=@user?.Id>
+                                    <img src="@Url.Content(imagePath)" class="avatar-small-size rounded-circle" />
+                                    @User.Identity.Name
+                                </a>
+                            </li>
                             <li class="nav-item">
                                 <form asp-area="" asp-controller="account" asp-action="logout">
                                     <button type="submit" class="nav-link text-light btn btn-link" style="width:auto">
@@ -99,11 +99,8 @@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"> </script>
-    <script src="~/js/microsoft/signalr/dist/browser/signalr.js"> </script>
-    <script src="~/js/microsoft/signalr/dist/browser/signalr.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/chat.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

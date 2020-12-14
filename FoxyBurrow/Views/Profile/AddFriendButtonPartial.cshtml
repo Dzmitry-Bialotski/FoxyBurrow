@@ -7,35 +7,42 @@
     bool curUserIsFollower = requestService.IsFollower(curUser, Model);
     bool friendIsFollower = requestService.IsFollower(Model, curUser);
 }
-@if (isFriend)
-{
-    <form asp-action="DeleteFriend" asp-controller="Request" asp-route-id=@Model.Id>
-        <button class="btn btn-secondary align-content-center border-block-rounded m-1 p-1">
-            Delete Friend
-        </button>
-    </form>
-}
-else if (curUserIsFollower)
-{
-    <form asp-action="DeleteFriend" asp-controller="Request" asp-route-id=@Model.Id>
-        <button class="btn btn-secondary align-content-center border-block-rounded m-1 p-1">
-            Unfollow
-        </button>
-    </form>
-}
-else if (friendIsFollower)
-{
-    <form asp-action="AddFriend" asp-controller="Request" asp-route-id=@Model.Id>
-        <button class="btn btn-secondary align-content-center border-block-rounded m-1 p-1">
-            Accept friendship
-        </button>
-    </form>
-}
-else
-{
-    <form asp-action="AddFriend" asp-controller="Request" asp-route-id=@Model.Id>
-        <button class="btn btn-secondary align-content-center border-block-rounded m-1 p-1">
-            Follow
-        </button>
-    </form>
-}
+<div class="row">
+    @if (isFriend)
+    {
+        <form asp-action="DeleteFriend" asp-controller="Request" asp-route-id=@Model.Id>
+            <button class="btn btn-secondary align-content-center border-block-rounded m-1 p-1 col-sm">
+                Delete Friend
+            </button>
+        </form>
+    }
+    else if (curUserIsFollower)
+    {
+        <form asp-action="DeleteFriend" asp-controller="Request" asp-route-id=@Model.Id>
+            <button class="btn btn-secondary align-content-center border-block-rounded m-1 p-1 col-sm">
+                Unfollow
+            </button>
+        </form>
+    }
+    else if (friendIsFollower)
+    {
+        <form asp-action="AddFriend" asp-controller="Request" asp-route-id=@Model.Id>
+            <button class="btn btn-secondary align-content-center border-block-rounded m-1 p-1 col-sm">
+                Accept friendship
+            </button>
+        </form>
+    }
+    else
+    {
+        <form asp-action="AddFriend" asp-controller="Request" asp-route-id=@Model.Id>
+            <button class="btn btn-secondary align-content-center border-block-rounded m-1 p-1 col-sm">
+                Follow
+            </button>
+        </form>
+    }
+    <a class="btn btn-primary my-2 ml-2 mr-3 col-sm border-block-rounded" asp-action="Index" asp-controller="Chat"
+       asp-route-userId="@Model.Id">
+        Write Message
+    </a>
+</div>
+

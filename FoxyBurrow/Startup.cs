@@ -106,10 +106,10 @@ namespace FoxyBurrow
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<ChatHub>("/Chat");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Profile}/{action=Index}/{id?}");
+                endpoints.MapHub<ChatHub>("/chathub");
             });
         }
     }

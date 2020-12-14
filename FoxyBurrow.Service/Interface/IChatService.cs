@@ -15,5 +15,6 @@ namespace FoxyBurrow.Service.Interface
         void Add(Chat chat);
         void Update(Chat chat);
         void Remove(long id);
+        Chat GetOrCreate(User user1, User user2);
     }
 }
