@@ -10,7 +10,7 @@
 @if (isFriend)
 {
     <form asp-action="DeleteFriend" asp-controller="Request" asp-route-id=@Model.Id>
-        <button class="btn btn-secondary align-content-center">
+        <button class="btn btn-secondary align-content-center border-block-rounded m-1 p-1">
             Delete Friend
         </button>
     </form>
@@ -18,7 +18,7 @@
 else if (curUserIsFollower)
 {
     <form asp-action="DeleteFriend" asp-controller="Request" asp-route-id=@Model.Id>
-        <button class="btn btn-secondary align-content-center">
+        <button class="btn btn-secondary align-content-center border-block-rounded m-1 p-1">
             Unfollow
         </button>
     </form>
@@ -26,7 +26,7 @@ else if (curUserIsFollower)
 else if (friendIsFollower)
 {
     <form asp-action="AddFriend" asp-controller="Request" asp-route-id=@Model.Id>
-        <button class="btn btn-secondary align-content-center">
+        <button class="btn btn-secondary align-content-center border-block-rounded m-1 p-1">
             Accept friendship
         </button>
     </form>
@@ -34,7 +34,7 @@ else if (friendIsFollower)
 else
 {
     <form asp-action="AddFriend" asp-controller="Request" asp-route-id=@Model.Id>
-        <button class="btn btn-secondary align-content-center">
+        <button class="btn btn-secondary align-content-center border-block-rounded m-1 p-1">
             Follow
         </button>
     </form>

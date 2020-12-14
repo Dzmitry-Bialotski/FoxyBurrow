@@ -1,5 +1,10 @@
 ﻿@inject SignInManager<User> signInManager
 @inject UserManager<User> userManager
+@inject IImageService imageService 
+@{ 
+    User user = await userManager.GetUserAsync(User);
+    string imagePath = imageService.getUserImagePath(user);
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +12,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - FoxyBurrow</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/chat.css" />
     <link rel="stylesheet" href="~/css/comment.css" />
@@ -16,12 +23,12 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Profile" asp-action="Index">
+                <a class="navbar-brand" asp-area="" asp-controller="Profile" asp-action="Index"  asp-route-id=@user?.Id>
                     <img src="@Url.Content("~/img/logo/Logo.ico")" class="logo-image rounded-circle" />
                 </a>
-                <a class="navbar-brand" asp-area="" asp-controller="Profile" asp-action="Index">
+                <a class="navbar-nav text-light" asp-area="" asp-controller="Profile" asp-action="Index"  asp-route-id=@user?.Id>
                     FoxyBurrow
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -31,16 +38,13 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            @{
-                                User user = await userManager.GetUserAsync(User);
-                            }
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id=@user?.Id>Profile</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id=@user?.Id>Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Chat" asp-action="Index">Chats</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Chat" asp-action="Index">Chats</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" role="button" data-toggle="dropdown"
+                            <a class="nav-link dropdown-toggle text-light" role="button" data-toggle="dropdown"
                                aria-haspopup="true" aria-expanded="false">Friends</a>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" asp-area="" asp-controller="Request" asp-action="Friends"> Friends </a>
@@ -49,16 +53,22 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Request" asp-action="SearchFriends">Search Friends</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Request" asp-action="SearchFriends">Search Friends</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         @if (signInManager.IsSignedIn(User))
                         {
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id=@user?.Id>
+                                <img src="@Url.Content(imagePath)" class="avatar-small-size rounded-circle" />
+                                @User.Identity.Name
+                            </a>
+                        </li>
                             <li class="nav-item">
                                 <form asp-area="" asp-controller="account" asp-action="logout">
-                                    <button type="submit" class="nav-link btn btn-link py-0" style="width:auto">
-                                        @User.Identity.Name Logout
+                                    <button type="submit" class="nav-link text-light btn btn-link" style="width:auto">
+                                        Logout
                                     </button>
                                 </form>
                             </li>
@@ -66,13 +76,12 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="account" asp-action="register">Register</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="account" asp-action="register">Register</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="account" asp-action="login">Login</a>
+                                <a class="nav-link text-light" asp-area="" asp-controller="account" asp-action="login">Login</a>
                             </li>
                         }
-
                     </ul>
                 </div>
             </div>
@@ -84,17 +93,17 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-light bg-dark">
         <div class="container">
-            &copy; 2020 - FoxyBurrow - Author: <a href="https://github.com/dimasindro">dimasiandro</a>
+            &copy; 2020 - FoxyBurrow - Author: <a class="text-light" href="https://github.com/dimasindro">dimasiandro</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"> </script>
+    <script src="~/js/microsoft/signalr/dist/browser/signalr.js"> </script>
     <script src="~/js/microsoft/signalr/dist/browser/signalr.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/chat.js" asp-append-version="true"></script>
-    <script src="~/js/comment.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

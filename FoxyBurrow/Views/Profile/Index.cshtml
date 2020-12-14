@@ -10,47 +10,79 @@
     bool isCurrentUser = Model.User.Id == Model.currentUserId;
     User currentUser = await userService.GetAsync(User);
 }
-
 <div class="container">
     <div class="profile">
-        <div class="profile-img-section">
-            <img src="@Url.Content(imagePath)" class="avatar-full-size rounded-circle" />
+        <div class="img-with-name row">
+            <div class="profile-img-section col-sm-4">
+                <img src="@Url.Content(imagePath)" class="avatar-full-size rounded-circle" />
+            </div>
+            <div class="col-sm-8">
+                <div class="profile-name font-italic text-light p-2 bg-dark border-block-rounded">
+                    <h2>@uinfo.FirstName  @uinfo.SecondName</h2>
+                </div>
+                @if (!string.IsNullOrEmpty(uinfo.Status))
+                {
+                    <div class="profile-status font-italic bg-dark text-light p-2 m-1 border-block-rounded">
+                        <h5> @uinfo.Status </h5>
+                    </div>
+                }
+            </div>
         </div>
-        <div class="profile-info">
-            <div class="profile-name">
-                @uinfo.FirstName  @uinfo.SecondName
+        <div class="profile-info bg-dark p-2">
+            <div class="m-1 p-1">
+                <h4 class="text-light text-center"> Profile information </h4>
             </div>
-            <div class="profile-status">
-                @uinfo.Status
+            <div class="profile-info-section row bg-light p-2 m-1 border-block-rounded">
+                <div class="profile-info-key col-sm"> Birthday </div>
+                <div class="profile-info-value col-sm"> @uinfo.Birthday.Date </div>
             </div>
-            <div class="profile-info-section">
-                <div class="profile-info-key"> Birthday </div>
-                <div class="profile-info-value"> @uinfo.Birthday </div>
-            </div>
-            <div class="profile-info-section">
-                <div class="profile-info-key"> City </div>
-                <div class="profile-info-value"> @uinfo.City </div>
-            </div>
-            <div class="profile-info-section">
-                <div class="profile-info-key"> Gender </div>
-                <div class="profile-info-value"> @uinfo.Gender </div>
-            </div>
-            <div class="profile-info-section">
-                <div class="profile-info-key"> Place of study </div>
-                <div class="profile-info-value"> @uinfo.PlaceOfStudy </div>
-            </div>
-            <div class="profile-info-section">
-                <div class="profile-info-key"> Place of work </div>
-                <div class="profile-info-value"> @uinfo.PlaceOfWork </div>
-            </div>
-            <div class="profile-info-section">
-                <div class="profile-info-key"> About Myself </div>
-                <div class="profile-info-value"> @uinfo.AboutMyself </div>
-            </div>
+            @if (!string.IsNullOrEmpty(uinfo.City))
+            {
+                <div class="profile-info-section row bg-light p-2 m-1 border-block-rounded">
+                    <div class="profile-info-key col-sm"> City </div>
+                    <div class="profile-info-value col-sm"> @uinfo.City </div>
+                </div>
+            }
+            @if (!(uinfo.Gender == Gender.NONE))
+            {
+                <div class="profile-info-section row bg-light p-2 m-1 border-block-rounded">
+                    <div class="profile-info-key col-sm"> Gender </div>
+                    <div class="profile-info-value col-sm"> @uinfo.Gender </div>
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(uinfo.PlaceOfStudy))
+            {
+                <div class="profile-info-section row bg-light p-2  m-1 border-block-rounded">
+                    <div class="profile-info-key col-sm"> Place of study </div>
+                    <div class="profile-info-value col-sm"> @uinfo.PlaceOfStudy </div>
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(uinfo.PlaceOfWork))
+            {
+                <div class="profile-info-section row bg-light p-2  m-1 border-block-rounded">
+                    <div class="profile-info-key col-sm"> Place of work </div>
+                    <div class="profile-info-value col-sm"> @uinfo.PlaceOfWork </div>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(uinfo.AboutMyself))
+            {
+                <div class="profile-info-section row bg-light p-2  m-1 border-block-rounded">
+                    <div class="profile-info-key col-sm"> About Myself </div>
+                    <div class="profile-info-value col-sm"> @uinfo.AboutMyself </div>
+                </div>
+            }
+
             @if (Model.User.Id == Model.currentUserId)
             {
-                <a class="btn btn-primary m-1" asp-action="EditProfile" asp-controller="Profile" 
-                   asp-route-id="@Model.User.Id"> Edit Profile </a>
+                <div class="profile-info row">
+                    <a class="btn btn-primary my-2 mx-2 col-sm border-block-rounded" asp-action="Create" asp-controller="Post"
+                       asp-route-userId="@Model.User.Id"> Write new post </a>
+                    <a class="btn btn-primary my-2 ml-2 mr-3 col-sm border-block-rounded" asp-action="EditProfile" asp-controller="Profile"
+                       asp-route-id="@Model.User.Id">
+                        Edit Profile
+                    </a>
+                </div>
             }
             else
             {
@@ -59,77 +91,79 @@
         </div>
     </div>
     <div class="post-section">
-        <div class="write-post-wrapper">
-            @if (Model.User.Id == Model.currentUserId)
-            {
-                <a class="btn btn-primary m-1" asp-action="Create" asp-controller="Post"
-                   asp-route-userId="@Model.User.Id"> Write new post </a>
-            }
-        </div>
-        @foreach(Post post in Model.User.Posts)
+        @foreach (Post post in Model.User.Posts)
         {
-            <div class="post">
-                @{
-                    string postImagePath = imageService.getPostImagePath(postService.Get(post.Id));
-                }
+            post.User = await userService.GetAsync(post.UserId);
+            UserInformation postUserInfo = post.User.UserInformation;
+            string postAvatarImagePath = imageService.getUserImagePath(post.User);
+            string postImagePath = imageService.getPostImagePath(postService.Get(post.Id));
+            <div class="post bg-dark my-1 py-1 justify-content-center">
+                <a class="nav-link" asp-controller="Profile" asp-action="Index" asp-route-id=@post.UserId>
+                    <img src="@Url.Content(postAvatarImagePath)" class="comment-avatar rounded-circle m-1" />
+                    <div class="comment-name text-light p-1 m-1">
+                        @postUserInfo.FirstName @postUserInfo.SecondName
+                    </div>
+                </a>
                 @if (postImagePath != null)
                 {
-                    <div class="post-image-section">
-                        <div class="form-group row col-sm-4 offset-4">
-                            <img src="@Url.Content(postImagePath)" class="post-full-size" asp-append-version="true" />
-                        </div>
-                    </div>
+                    <img src="@Url.Content(postImagePath)" class="post-full-size py-2 my-2 mx-auto d-block" asp-append-version="true" />
                 }
-
-                <div class="post-text">
+                <div class="post-text bg-light p-2 my-1 mx-5 border-block-rounded text-dark">
                     @post.Text
                 </div>
-                <div class="post-date">
+                <div class="post-date text-light p-2 m-2">
                     @post.MessageDate
                 </div>
                 @if (Model.User.Id == Model.currentUserId)
                 {
-                    <a class="btn btn-primary m-1" asp-action="Edit" asp-controller="Post"
-                        asp-route-postId="@post.Id"> Edit post </a>
-                    <a class="btn btn-danger m-1" asp-action="Delete" asp-controller="Post"
+                    <a class="btn btn-primary m-1 p-1 border-block-rounded" asp-action="Edit" asp-controller="Post"
+                       asp-route-postId="@post.Id"> Edit post </a>
+                    <a class="btn btn-danger m-1 p-1 border-block-rounded" asp-action="Delete" asp-controller="Post"
                        asp-route-id="@post.Id"> Delete Post </a>
                 }
-                @if(requestService.IsFriend(Model.User,currentUser) || isCurrentUser)
+                @if (requestService.IsFriend(Model.User, currentUser) || isCurrentUser)
                 {
-                 <div class="write-comment-wrapper">
+                    <div class="write-comment-wrapper pl-3">
                         <form asp-action="AddComment" asp-controller="Comment">
                             <input asp-for="UserToReturnId" value=@Model.User.Id type="hidden">
                             <input asp-for="PostId" value=@post.Id type="hidden">
-                            <input class="comment-text-input" asp-for="Text" />
-                            <button class="btn btn-primary"> Write Comment</button>
+                            <div class="form-group row">
+                                <input class="comment-text-input col-sm-8 m-1 p-1 border-block-rounded" asp-for="Text" placeholder="Write comment" />
+                                <button class="btn btn-primary col-sm-3 m-1 p-1 border-block-rounded"> Write Comment</button>
+                            </div>
                         </form>
-                </div>
-                }
-                @foreach (Comment comment in post.Comments)
-                {
-                    comment.User = await userService.GetAsync(comment.UserId);
-                    UserInformation commentUserInfo = comment.User.UserInformation;
-                    <div class="comment">
-                        <div class="comment-name">
-                            @commentUserInfo.FirstName @commentUserInfo.SecondName
-                        </div>
-                        <div class="comment-text">
-                            @comment.Text
-                        </div>
-                        <div class="comment-date">
-                            @comment.MessageDate
-                        </div>
-                        @if (currentUser.Id == comment.UserId || isCurrentUser)
-                        {
-                         <form asp-action="DeleteComment" asp-controller="Comment">
-                            <input asp-for="UserToReturnId" value=@Model.User.Id type="hidden">
-                            <input asp-for="CommentId" value=@comment.Id type="hidden">
-                            <button class="btn btn-danger">Delete Comment</button>
-                         </form>
-                        }
                     </div>
                 }
             </div>
+            @foreach (Comment comment in post.Comments)
+            {
+                comment.User = await userService.GetAsync(comment.UserId);
+                UserInformation commentUserInfo = comment.User.UserInformation;
+                string commentImagePath = imageService.getUserImagePath(comment.User);
+                <div class="comment bg-dark my-1 py-1">
+                    <a class="nav-link" asp-controller="Profile" asp-action="Index" asp-route-id=@comment.UserId>
+                        <img src="@Url.Content(commentImagePath)" class="comment-avatar rounded-circle m-1" />
+                        <div class="comment-name text-light p-1 m-1">
+                            @commentUserInfo.FirstName @commentUserInfo.SecondName
+                        </div>
+                    </a>
+                    <div class="comment-text bg-light p-2 my-1 mx-5 border-block-rounded text-dark">
+                        @comment.Text
+                    </div>
+                    <div class="comment-date text-light p-1 my-1 mx-5">
+                        @comment.MessageDate
+                    </div>
+                    @if (currentUser.Id == comment.UserId || isCurrentUser)
+                    {
+                        <form asp-action="DeleteComment" asp-controller="Comment" class="mt-3">
+                            <input asp-for="UserToReturnId" value=@Model.User.Id type="hidden">
+                            <input asp-for="CommentId" value=@comment.Id type="hidden">
+                            <button class="btn btn-danger mx-2 p-1 ml-5 border-block-rounded">Delete Comment</button>    
+                        </form>
+                    }
+                </div>
+            }
+
         }
     </div>
 </div>

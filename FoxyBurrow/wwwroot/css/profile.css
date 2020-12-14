@@ -1,10 +1,38 @@
 ﻿body {
 }
 .avatar-full-size{
-    width : 128px;
+    width : 200px;
     height: auto;
 }
 .avatar-middle-size{
     width: 64px;
     height: auto;
 }
+.avatar-small-size{
+    width: 30px;
+    height: auto;
+}
+.profile-info {
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
+    width: 700px;
+}
+.profile-info-section {
+    border-radius: 20px;
+}
+.profile-info-key {
+    font-weight: 600;
+}
+profile-status {
+    border-radius: 20px;
+}
+.img-with-name {
+    margin-left: auto;
+    margin-right: auto;
+    width: 700px;
+}
+.border-block-rounded {
+    border-radius: 20px;
+}
+

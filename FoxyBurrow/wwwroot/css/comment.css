@@ -1,2 +1,16 @@
 ﻿body {
 }
+.comment * {
+    color: white;
+}
+.comment {
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
+    width: 600px;
+}
+img.comment-avatar {
+    width: 30px;
+    height: auto;
+    float: left;
+}

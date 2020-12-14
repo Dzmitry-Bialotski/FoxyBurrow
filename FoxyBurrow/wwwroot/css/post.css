@@ -1,6 +1,15 @@
 ﻿body {
 }
-.post-full-size{
-    width:300px;
-    height:auto;
+.post-full-size {
+    border-radius: 40px;
+    /*margin-left: auto;
+    margin-right: auto;*/
+    width: 550px;
+    height: auto;
+}
+.post {
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 20px;
+    width: 700px;
 }
