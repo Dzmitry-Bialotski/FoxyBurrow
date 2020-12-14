@@ -1,5 +1,29 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ICollection<Chat>
+@inject IChatService chatService
+@inject IUserService userService 
+@inject IImageService imageService
 @{
+    ViewData["Title"] = "Chats";
+    User curUser = await userService.GetAsync(User);
 }
+<h1>  Chats </h1>
+<div class="chat-list">
+    @foreach (Chat chat in Model)
+    {
+        User opponent = await chatService.GetOpponent(chat, curUser);
+        string opponentAvatarImagePath = imageService.getUserImagePath(opponent);
+        <div class="chat">
+            <a asp-action="Index" asp-controller="Profile" asp-route-id="@opponent.Id">
+                <img src="@Url.Content(opponentAvatarImagePath)" class="comment-avatar rounded-circle m-1" />
+                <div class="friend-name">
+                    @opponent.UserInformation.FirstName @opponent.UserInformation.SecondName
+                </div>
+            </a>
+            <a class="btn btn-primary my-2 ml-2 mr-3 col-sm border-block-rounded" asp-action="Index" asp-controller="Chat"
+                    asp-route-userId="@opponent.Id">
+                    Write Message
+            </a>
+        </div>
+    }
+</div>
+

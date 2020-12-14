@@ -6,16 +6,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace FoxyBurrow.Service.Impl
 {
     public class ChatService : IChatService
     {
         private readonly IRepository<Chat> _repository;
+        private readonly IUserService _userService;
 
-        public ChatService(IRepository<Chat> repository)
+        public ChatService(IRepository<Chat> repository, IUserService userService)
         {
             _repository = repository;
+            _userService = userService;
         }
 
         public void Add(Chat chat)
@@ -79,6 +82,18 @@ namespace FoxyBurrow.Service.Impl
                 Update(chat);
                 return chat;
             }
+        }
+        public async Task<User> GetOpponent(Chat chat, User user)
+        {
+            if (chat.FirstUserId == user.Id)
+            {
+                return await _userService.GetAsync(chat.SecondUserId);
+            }
+            else if (chat.SecondUserId == user.Id)
+            {
+                return await _userService.GetAsync(chat.FirstUserId);
+            }
+            else return null;
         }
     }
 }

@@ -26,9 +26,11 @@ namespace FoxyBurrow.Controllers
             Chat chat = _chatService.GetOrCreate(curUser, friend);
             return View(chat);
         }
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
-            return View();
+            User user = await _userService.GetAsync(User);
+            List<Chat> chatList = _chatService.GetAll(user).ToList();
+            return View(chatList);
         }
     }
 }

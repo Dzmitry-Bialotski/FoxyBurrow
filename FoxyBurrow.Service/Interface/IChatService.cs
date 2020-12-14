@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace FoxyBurrow.Service.Interface
 {
@@ -16,5 +17,6 @@ namespace FoxyBurrow.Service.Interface
         void Update(Chat chat);
         void Remove(long id);
         Chat GetOrCreate(User user1, User user2);
+        Task<User> GetOpponent(Chat chat, User user);
     }
 }
