@@ -1,0 +1,41 @@
+﻿@model User
+@inject IRequestService requestService
+@inject UserManager<User> userManager
+@{
+    User curUser = await userManager.GetUserAsync(User);
+    bool isFriend = requestService.IsFriend(curUser, Model);
+    bool curUserIsFollower = requestService.IsFollower(curUser, Model);
+    bool friendIsFollower = requestService.IsFollower(Model, curUser);
+}
+@if (isFriend)
+{
+    <form asp-action="DeleteFriend" asp-controller="Request" asp-route-id=@Model.Id>
+        <button class="btn btn-secondary align-content-center">
+            Delete Friend
+        </button>
+    </form>
+}
+else if (curUserIsFollower)
+{
+    <form asp-action="DeleteFriend" asp-controller="Request" asp-route-id=@Model.Id>
+        <button class="btn btn-secondary align-content-center">
+            Unfollow
+        </button>
+    </form>
+}
+else if (friendIsFollower)
+{
+    <form asp-action="AddFriend" asp-controller="Request" asp-route-id=@Model.Id>
+        <button class="btn btn-secondary align-content-center">
+            Accept friendship
+        </button>
+    </form>
+}
+else
+{
+    <form asp-action="AddFriend" asp-controller="Request" asp-route-id=@Model.Id>
+        <button class="btn btn-secondary align-content-center">
+            Follow
+        </button>
+    </form>
+}

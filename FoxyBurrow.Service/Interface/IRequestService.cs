@@ -18,6 +18,10 @@ namespace FoxyBurrow.Service.Interface
         void Update(Request request);
         void Remove(long id);
         IQueryable<User> GetUserFriends(User user);
+        bool IsFriend(User user, User friend);
+        bool IsFollower(User user, User friend);
+        void AddFriend(User user, User friend);
+        void DeleteFriend(User user, User friend);
 
     }
 }

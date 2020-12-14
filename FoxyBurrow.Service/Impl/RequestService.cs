@@ -49,13 +49,13 @@ namespace FoxyBurrow.Service.Impl
         public IQueryable<User> GetAllIncomingByUser(User user)
         {
             return _repository.GetAll().Where(r => r.UserReceiver.Id == user.Id
-            && r.RequestType == RequestType.WAITING).Select(r => r.UserReceiver);
+            && r.RequestType == RequestType.WAITING).Select(r => r.UserSender);
         }
 
         public IQueryable<User> GetAllOutgoingByUser(User user)
         {
             return _repository.GetAll().Where(r => r.UserSender.Id == user.Id
-            && r.RequestType == RequestType.WAITING).Select(r => r.UserSender);
+            && r.RequestType == RequestType.WAITING).Select(r => r.UserReceiver);
         }
 
         public IQueryable<User> GetUserFriends(User user)
@@ -76,6 +76,71 @@ namespace FoxyBurrow.Service.Impl
         public void Update(Request request)
         {
             _repository.Update(request);
+        }
+        public bool IsFriend(User user, User friend)
+        {
+            return _repository.GetAll().Where(r =>
+            (((r.UserReceiverId == user.Id && r.UserSenderId == friend.Id) ||
+            (r.UserReceiverId == friend.Id && r.UserSenderId == user.Id)) &&
+            (r.RequestType == RequestType.CONFIRMED))).Count() > 0;
+        }
+        public bool IsFollower(User user, User friend)
+        {
+            return _repository.GetAll().Where(r =>
+            r.UserSenderId == user.Id && r.UserReceiverId == friend.Id && r.RequestType != RequestType.CONFIRMED)
+                .Count() > 0;
+        }
+        public void AddFriend(User user, User friend)
+        {
+            if (IsFriend(user, friend) || IsFollower(user, friend))
+            {
+                return;
+            }
+            //if friend follows you
+            else if (IsFollower(friend, user))
+            {
+                Request request = _repository.GetAll().SingleOrDefault(r =>
+                r.UserSenderId == friend.Id && r.UserReceiverId == user.Id && r.RequestType != RequestType.CONFIRMED);
+                request.RequestType = RequestType.CONFIRMED;
+                _repository.Update(request);
+            }
+            else //if users dont have relationship
+            {
+                Request request = new Request
+                {
+                    UserReceiver = friend,
+                    UserSender = user,
+                    RequestType = RequestType.WAITING,
+                };
+                _repository.Add(request);
+            }
+        }
+        public void DeleteFriend(User user, User friend)
+        {
+            if (IsFriend(user, friend))
+            {
+                Request request = _repository.GetAll().SingleOrDefault(r =>
+                (((r.UserReceiverId == user.Id && r.UserSenderId == friend.Id) ||
+                (r.UserReceiverId == friend.Id && r.UserSenderId == user.Id)) &&
+                (r.RequestType == RequestType.CONFIRMED)));
+                request.RequestType = RequestType.REJECTED;
+                request.UserSender = friend;
+                request.UserReceiver = user;
+                _repository.Update(request);
+                return;
+            }
+            //if user is follower
+            else if (IsFollower(user, friend))
+            {
+                Request request = _repository.GetAll().SingleOrDefault(r =>
+                    r.UserSenderId == user.Id && r.UserReceiverId == friend.Id && r.RequestType != RequestType.CONFIRMED);
+                _repository.Remove(request);
+            }
+            else if (IsFollower(friend, user))
+            {
+                //!TODO May be add Black List
+                return;
+            }
         }
     }
 }

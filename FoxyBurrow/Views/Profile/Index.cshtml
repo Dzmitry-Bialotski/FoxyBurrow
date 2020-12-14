@@ -50,6 +50,10 @@
                 <a class="btn btn-primary m-1" asp-action="EditProfile" asp-controller="Profile" 
                    asp-route-id="@Model.User.Id"> Edit Profile </a>
             }
+            else
+            {
+                @await Html.PartialAsync("AddFriendButtonPartial", Model.User)
+            }
         </div>
     </div>
     <div class="post-section">

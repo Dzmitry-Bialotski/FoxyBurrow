@@ -45,16 +45,20 @@ namespace FoxyBurrow.Controllers
             };
             return View(model);
         }
-        public async Task<IActionResult> AddFriend()
+        public async Task<IActionResult> AddFriend(string id)
         {
-            return View();
+            User curUser = await _userService.GetAsync(User);
+            User friend = await _userService.GetAsync(id);
+            _requestService.AddFriend(curUser, friend);
+            return RedirectToAction("Index","Profile", new { id } );
         }
-        public async Task<IActionResult> DeleteFriend()
+        public async Task<IActionResult> DeleteFriend(string id)
         {
-            return View();
+            User curUser = await _userService.GetAsync(User);
+            User friend = await _userService.GetAsync(id);
+            _requestService.DeleteFriend(curUser, friend);
+            return RedirectToAction("Index", "Profile", new { id });
         }
-
-
 
         [HttpGet]
         public async Task<IActionResult> SearchFriends(string request)
