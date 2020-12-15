@@ -30,7 +30,7 @@ namespace FoxyBurrow.Controllers
         {
             User user = await _userService.GetAsync(User);
             List<Chat> chatList = _chatService.GetAll(user).ToList();
-            return View(chatList);
+            return View(chatList);      
         }
     }
 }

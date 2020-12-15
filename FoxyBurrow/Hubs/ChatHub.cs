@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using FoxyBurrow.Core.Entity;
+using FoxyBurrow.Service.Interface;
+using FoxyBurrow.Service.Util.Image;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +12,36 @@ namespace FoxyBurrow.Hubs
 {
     public class ChatHub : Hub
     {
-        public async Task Send(string message)
+        private readonly ILogger<ChatHub> _logger;
+        private readonly IChatService _chatService;
+        private readonly IUserService _userService;
+        private readonly IImageService _imageService;
+        private readonly IMessageService _messageService;
+        public ChatHub( ILogger<ChatHub> logger, IChatService chatService, IUserService userService,
+                    IImageService imageService, IMessageService messageService)
         {
-            await Clients.All.SendAsync("Send", message);
+            _logger = logger;
+            _chatService = chatService;
+            _userService = userService;
+            _imageService = imageService;
+            _messageService = messageService;
+        }
+        public async Task SendMessage(string chatId, string userId, string messageText)
+        {
+            long longChatId = Convert.ToInt64(chatId);
+            User user = await _userService.GetAsync(userId);
+            string user_full_name = user.UserInformation.FirstName +" "+ user.UserInformation.SecondName;
+            string imagePath = _imageService.getUserImagePath(user);
+            Message message = new Message()
+            {
+                Text = messageText,
+                ChatId = longChatId,
+                UserId = userId
+            };
+            await Clients.Caller.SendAsync("ReceiveMessage", user_full_name, imagePath, messageText, message.MessageDate.ToString(), true);
+            await Clients.Others.SendAsync("ReceiveMessage", user_full_name, imagePath, messageText, message.MessageDate.ToString(), false);
+            _logger.LogInformation($"user {user_full_name} send message");
+            _messageService.Add(message);
         }
     }
 }

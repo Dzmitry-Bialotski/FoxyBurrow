@@ -1,11 +1,42 @@
 ﻿@model Chat
+@inject IUserService userService
+@inject IChatService chatService
+@inject IImageService imageService 
 @{
+    User curUser = await userService.GetAsync(User);
+    User opponent = await chatService.GetOpponent(Model, curUser);
+    string opponentFullName = opponent.UserInformation.FirstName + " "+  opponent.UserInformation.SecondName;
+    ViewData["Title"] = opponentFullName;
 }
-<div id="inputForm">
-    <input type="text" id="message" />
-    <input type="button" id="sendBtn" value="Отправить" />
+<h2> Chat with @opponentFullName </h2>
+<div class=" message-send" style="width : 600px; height : 50px;">
+    <div class="row">
+        <textarea id="messageText"></textarea>
+        <input type="hidden" id="user-id" value="@curUser.Id">
+        <input type="hidden" id="chat-id" value="@Model.Id">
+        <button type="submit" id="sendMessageButton" class="btn btn-primary">
+            Send Message
+        </button>
+    </div>
 </div>
-<div id="chatroom"></div>
+<div id="messagesList">
+    @foreach(Message message in Model.Messages)
+    {
+        User owner = await userService.GetAsync(message.UserId);
+        string ownerFullName = opponent.UserInformation.FirstName + " "+ opponent.UserInformation.SecondName;
+        string imagePath = imageService.getUserImagePath(owner);
+        <div class="message-box">
+            <div class="message-image-name">
+                <img src="@Url.Content(imagePath)" class="comment-avatar rounded-circle m-1"/>
+                <h5> @ownerFullName</h5>
+            </div>
+            <h6 class="message-date"> @message.MessageDate </h6>
+            <div class="message-text">
+                <h6> @message.Text</h6>
+            </div>
+        </div>
+    }
+</div>
 
 <script src="~/js/microsoft/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/chat.js"></script>
