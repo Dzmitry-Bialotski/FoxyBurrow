@@ -19,10 +19,16 @@
                     @opponent.UserInformation.FirstName @opponent.UserInformation.SecondName
                 </div>
             </a>
-            <a class="btn btn-primary my-2 ml-2 mr-3 col-sm border-block-rounded" asp-action="Index" asp-controller="Chat"
-                    asp-route-userId="@opponent.Id">
+            <div class="row">
+                <a class="btn btn-primary my-2 ml-2 mr-3 col-sm border-block-rounded" asp-action="Index" asp-controller="Chat"
+                   asp-route-userId="@opponent.Id">
                     Write Message
-            </a>
+                </a>
+                <a class="btn btn-danger my-2 ml-2 mr-3 col-sm border-block-rounded" asp-action="Delete" asp-controller="Chat"
+                   asp-route-chatId="@chat.Id">
+                    Delete chat
+                </a>
+            </div>
         </div>
     }
 </div>

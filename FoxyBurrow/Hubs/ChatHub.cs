@@ -28,6 +28,10 @@ namespace FoxyBurrow.Hubs
         }
         public async Task SendMessage(string chatId, string userId, string messageText)
         {
+            if(string.IsNullOrEmpty(messageText))
+            {
+                return;
+            }
             long longChatId = Convert.ToInt64(chatId);
             User user = await _userService.GetAsync(userId);
             string user_full_name = user.UserInformation.FirstName +" "+ user.UserInformation.SecondName;
@@ -38,8 +42,8 @@ namespace FoxyBurrow.Hubs
                 ChatId = longChatId,
                 UserId = userId
             };
-            await Clients.Caller.SendAsync("ReceiveMessage", user_full_name, imagePath, messageText, message.MessageDate.ToString(), true);
-            await Clients.Others.SendAsync("ReceiveMessage", user_full_name, imagePath, messageText, message.MessageDate.ToString(), false);
+            await Clients.Caller.SendAsync("ReceiveMessage", imagePath, messageText, message.MessageDate.ToString(), true);
+            await Clients.Others.SendAsync("ReceiveMessage", imagePath, messageText, message.MessageDate.ToString(), false);
             _logger.LogInformation($"user {user_full_name} send message");
             _messageService.Add(message);
         }

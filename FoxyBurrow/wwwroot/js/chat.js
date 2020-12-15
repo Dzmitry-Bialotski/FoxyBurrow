@@ -6,47 +6,85 @@
 document.getElementById("sendMessageButton").disabled = true;
 
 //write mess
-hubConnection.on("ReceiveMessage", function (user_full_name, imagePath, messageText, messageDate, isWriter) {
+hubConnection.on("ReceiveMessage", function (imagePath, messageText, messageDate, isWriter) {
     try {
-        var fname = user_full_name;
-        var ipath = imagePath;
-        var mtext = messageText;
-        var mdate = messageDatel;
-        var isWr = isWriter; 
-        //!TODO rewrite message
-        /*var message = document.createElement("div");
         if (isWriter) {
-            message.className = "message border border-light rounded bg-dark float-right";
-            message.style = "margin: 8px; margin-left: 40px; width: 80% ";
-        }
+            /*
+                                <div class="outgoing-chats">
+                                    <div class="outgoing-chats-img">
+                                        <img src="@Url.Content(imagePath)" />
+                                    </div>
+                                    <div class="outgoing-chats-msg">
+                                        <p> @message.Text</p>
+                                        <span class="time"> @message.MessageDate</span>
+                                    </div>
+                                </div>
+             */
+            var mess = document.createElement("div");
+            mess.className = "outgoing-chats";
+
+            var mess_img_block = document.createElement("div");
+            mess_img_block.className = "outgoing-chats-img";
+            var mess_img = document.createElement("img");
+            mess_img.src = imagePath;
+
+            var mess_text_block = document.createElement("div");
+            mess_text_block.className = "outgoing-chats-msg";
+            var p = document.createElement("p");
+            p.textContent = messageText;
+            var span = document.createElement("span");
+            span.className = "time";
+            span.textContent = messageDate;
+
+            mess.appendChild(mess_img_block);
+                mess_img_block.appendChild(mess_img);
+            mess.appendChild(mess_text_block);
+                mess_text_block.appendChild(p);
+                mess_text_block.appendChild(span);
+            document.getElementById("messagesList").appendChild(mess);
+        }   
         else {
-            message.className = "message border border-light rounded bg-dark float-left";
-            message.style = "margin: 8px; margin-right: 40px; width: 80% ";
+            /*
+                                <div class="received-chats">
+                                    <div class="received-chats-img">
+                                        <img src="@Url.Content(imagePath)" />
+                                    </div>
+                                    <div class="received-msg">
+                                        <div class="received-msg-inbox">
+                                            <p> @message.Text</p>
+                                            <span class="time"> @message.MessageDate</span>
+                                        </div>
+                                    </div>
+                                </div>
+             */
+            var mess = document.createElement("div");
+            mess.className = "received-chats";
+
+            var mess_img_block = document.createElement("div");
+            mess_img_block.className = "received-chats-img";
+            var mess_img = document.createElement("img");
+            mess_img.src = imagePath;
+
+            var mess_text_block = document.createElement("div");
+            mess_text_block.className = "received-msg";
+            var mess_text_block_inbox = document.createElement("div");
+            mess_text_block_inbox.className = "received-msg-inbox";
+            var p = document.createElement("p");
+            p.textContent = messageText;
+            var span = document.createElement("span");
+            span.className = "time";
+            span.textContent = messageDate;
+
+            mess.appendChild(mess_img_block);
+            mess_img_block.appendChild(mess_img);
+            mess.appendChild(mess_text_block);
+            mess_text_block.appendChild(mess_text_block_inbox);
+            mess_text_block_inbox.appendChild(p);
+            mess_text_block_inbox.appendChild(span);
+            document.getElementById("messagesList").appendChild(mess);
         }
-
-        var message_profile = document.createElement("div");
-        message_profile.className = "message-profile row";
-
-        var h6 = document.createElement("h5");
-        h6.className = "text-light";
-        h6.style = "margin-left: 30px;";
-        h6.textContent = profile_full_name;
-
-        message_profile.appendChild(h6);
-        message.appendChild(message_profile);
-
-        var messText = document.createElement("h6");
-        messText.className = "text-light";
-        messText.textContent = messageText;
-        var messDate = document.createElement("h6");
-        messDate.className = "text-light";
-        messDate.textContent = messageDate;
-
-        message.appendChild(messText);
-        message.appendChild(messDate);
-
-        document.getElementById("messagesList").appendChild(message);
-        */
+        var scroll = document.getElementById('scroll_chat');
+        scroll.scrollTop = scroll.scrollHeight;
     }
     catch (err) {
         alert(err);
@@ -65,7 +103,7 @@ document.getElementById("sendMessageButton").addEventListener("click", function 
     var userId = document.getElementById("user-id").value;
     var messageText = document.getElementById("messageText").value;
     var chatId = document.getElementById("chat-id").value;
-    connection.invoke("SendMessage", chatId, userId, messageText).catch(function (err) {
+    hubConnection.invoke("SendMessage", chatId, userId, messageText).catch(function (err) {
         return console.error(err.toString());
     });
     document.getElementById("messageText").value = "";

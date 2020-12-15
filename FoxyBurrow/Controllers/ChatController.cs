@@ -32,5 +32,10 @@ namespace FoxyBurrow.Controllers
             List<Chat> chatList = _chatService.GetAll(user).ToList();
             return View(chatList);      
         }
+        public IActionResult Delete(long chatId)
+        {
+            _chatService.Remove(chatId);
+            return RedirectToAction("List");
+        }
     }
 }
