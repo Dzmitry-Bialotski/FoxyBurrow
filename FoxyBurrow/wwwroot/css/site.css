@@ -77,3 +77,9 @@ body {
     width: 82px;
     height: 51px;
 }
+#logo-title {
+    color: #F0D745;
+}
+    #logo-title:hover {
+        color: #F09C2A;
+    }

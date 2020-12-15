@@ -14,3 +14,6 @@ img.comment-avatar {
     height: auto;
     float: left;
 }
+.comment-text-input {
+    background-color: #D0E0F7;
+}  

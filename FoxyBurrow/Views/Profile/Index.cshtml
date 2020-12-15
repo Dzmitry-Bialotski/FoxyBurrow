@@ -34,7 +34,7 @@
             </div>
             <div class="profile-info-section row bg-light p-2 m-1 border-block-rounded">
                 <div class="profile-info-key col-sm"> Birthday </div>
-                <div class="profile-info-value col-sm"> @uinfo.Birthday.Date </div>
+                <div class="profile-info-value col-sm"> @uinfo.Birthday.Date.ToShortDateString() </div>
             </div>
             @if (!string.IsNullOrEmpty(uinfo.City))
             {
