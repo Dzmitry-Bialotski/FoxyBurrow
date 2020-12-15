@@ -36,7 +36,9 @@ namespace FoxyBurrow.Hubs
             User user = await _userService.GetAsync(userId);
             string user_full_name = user.UserInformation.FirstName +" "+ user.UserInformation.SecondName;
             string imagePath = _imageService.getUserImagePath(user);
-            Message message = new Message()
+            //to make js load picture we have to remove "~/" from the begining of str
+            imagePath = imagePath.Remove(0, 2);
+             Message message = new Message()
             {
                 Text = messageText,
                 ChatId = longChatId,
