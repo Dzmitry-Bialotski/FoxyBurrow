@@ -112,7 +112,7 @@
                     @post.Text
                 </div>
                 <div class="post-date text-light p-2 m-2">
-                    @post.MessageDate
+                    <p class="date-output">@post.MessageDate.ToString("O")</p>
                 </div>
                 @if (Model.User.Id == Model.currentUserId)
                 {
@@ -150,8 +150,8 @@
                     <div class="comment-text bg-light p-2 my-1 mx-5 border-block-rounded text-dark">
                         @comment.Text
                     </div>
-                    <div class="comment-date text-light p-1 my-1 mx-5">
-                        @comment.MessageDate
+                    <div class="comment-date text-light p-1 my-1 mx-5 date-output">
+                        @comment.MessageDate.ToString("O")
                     </div>
                     @if (currentUser.Id == comment.UserId || isCurrentUser)
                     {

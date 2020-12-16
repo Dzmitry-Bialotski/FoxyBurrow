@@ -44,8 +44,8 @@ namespace FoxyBurrow.Hubs
                 ChatId = longChatId,
                 UserId = userId
             };
-            await Clients.Caller.SendAsync("ReceiveMessage", imagePath, messageText, message.MessageDate.ToString(), true);
-            await Clients.Others.SendAsync("ReceiveMessage", imagePath, messageText, message.MessageDate.ToString(), false);
+            await Clients.Caller.SendAsync("ReceiveMessage", imagePath, messageText, message.MessageDate.ToString("O"), true);
+            await Clients.Others.SendAsync("ReceiveMessage", imagePath, messageText, message.MessageDate.ToString("O"), false);
             _logger.LogInformation($"user {user_full_name} send message");
             _messageService.Add(message);
         }

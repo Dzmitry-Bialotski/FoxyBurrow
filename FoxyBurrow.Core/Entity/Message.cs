@@ -14,7 +14,7 @@ namespace FoxyBurrow.Core.Entity
         public string UserId { get; set; }
         public Message()
         {
-            MessageDate = DateTime.Now;
+            MessageDate = DateTime.UtcNow;
         }
     }
 }

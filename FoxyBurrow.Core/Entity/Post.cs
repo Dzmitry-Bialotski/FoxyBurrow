@@ -14,7 +14,7 @@ namespace FoxyBurrow.Core.Entity
         public string ImagePath { get; set; }
         public Post()
         {
-            MessageDate = DateTime.Now;
+            MessageDate = DateTime.UtcNow;
             Comments = new List<Comment>();
         }
     }
