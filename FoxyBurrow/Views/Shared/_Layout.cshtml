@@ -25,10 +25,10 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id=@user?.Id>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="@Url.Content("~/img/logo/Logo.ico")" class="logo-image rounded-circle" />
                 </a>
-                <a class="navbar-nav" id="logo-title" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id=@user?.Id>
+                <a class="navbar-nav" id="logo-title" asp-area="" asp-controller="Home" asp-action="Index">
                     FoxyBurrow
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -38,14 +38,20 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id=@user?.Id>Profile</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Profile" asp-action="Index" asp-route-id=@user?.Id>
+                                <i class="fa fa-user">Profile</i>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Chat" asp-action="List">Chats</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Chat" asp-action="List">
+                                <i class="fa fa-comment">Chats</i>
+                            </a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-light" role="button" data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">Friends</a>
+                               aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-users">Friends</i>
+                            </a>
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" asp-area="" asp-controller="Request" asp-action="Friends"> Friends </a>
                                 <a class="dropdown-item" asp-area="" asp-controller="Request" asp-action="Followers"> Followers </a>
@@ -53,7 +59,9 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Request" asp-action="SearchFriends">Search</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Request" asp-action="SearchFriends">
+                                <i class="fa fa-search"> Search</i>
+                            </a>
                         </li>
                     </ul>
                     <ul class="navbar-nav ml-auto">

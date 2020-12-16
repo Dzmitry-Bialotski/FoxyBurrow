@@ -130,7 +130,7 @@ img {
     background: transparent !important;
     border: none !important;        
 }
-.fa{
+button.fa {
     color: #007bff;
     float: right;
 }
