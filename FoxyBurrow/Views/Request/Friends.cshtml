@@ -2,6 +2,12 @@
 @{
     ViewData["Title"] = "Friends";
 }
-<h1> Friends </h1>
+<div class="text-center" style="width:500px; margin-left: auto;margin-right: auto;">
+    <div class="text-light bg-dark border-block-rounded d-flex justify-content-center mb-1 p-1">
+        <h2 style="color: #F0D745;"> Friends </h2>
+    </div>
+    <vc:friend-list model=@Model.Users></vc:friend-list>
+</div>
 
-<vc:friend-list model=@Model.Users></vc:friend-list>
+
+

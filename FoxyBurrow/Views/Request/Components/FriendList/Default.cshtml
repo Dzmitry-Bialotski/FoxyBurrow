@@ -4,10 +4,10 @@
 @foreach (User user in Model)
 {
     string imagePath = imageService.getUserImagePath(await userService.GetAsync(user.Id));
-    <div class="border rounded mb-1">
+    <div class="text-light bg-dark mb-1 pl-3 p-1 border-block-rounded">
         <a class="row text-light" asp-controller="Profile" asp-action="Index" asp-route-id=@user.Id>
-            <img src="@Url.Content(imagePath)" class="avatar-full-size rounded-circle" asp-append-version="true" />
-            <h3 style="margin-top : 50px"> @user.UserInformation.FirstName   @user.UserInformation.SecondName </h3>
+            <img src="@Url.Content(imagePath)" class="avatar-friend-list m-1 rounded-circle" asp-append-version="true" />
+            <h4 style="margin-top : 34px"> @user.UserInformation.FirstName   @user.UserInformation.SecondName </h4>
         </a>
     </div>
 }

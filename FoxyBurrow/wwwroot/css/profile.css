@@ -12,6 +12,11 @@
     width: 30px;
     height: auto;
 }
+.avatar-friend-list{
+    width: 100px;
+    height: 100px;
+    float : left;
+}
 .profile-info {
     margin-left: auto;
     margin-right: auto;
