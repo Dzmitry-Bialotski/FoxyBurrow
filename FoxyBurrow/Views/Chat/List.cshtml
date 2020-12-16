@@ -6,30 +6,33 @@
     ViewData["Title"] = "Chats";
     User curUser = await userService.GetAsync(User);
 }
-<h1>  Chats </h1>
-<div class="chat-list">
-    @foreach (Chat chat in Model)
-    {
-        User opponent = await chatService.GetOpponent(chat, curUser);
-        string opponentAvatarImagePath = imageService.getUserImagePath(opponent);
-        <div class="chat">
-            <a asp-action="Index" asp-controller="Profile" asp-route-id="@opponent.Id">
-                <img src="@Url.Content(opponentAvatarImagePath)" class="comment-avatar rounded-circle m-1" />
-                <div class="friend-name">
-                    @opponent.UserInformation.FirstName @opponent.UserInformation.SecondName
+
+<div class="text-center" style="width:500px; margin-left: auto;margin-right: auto;">
+    <div class="text-light bg-dark border-block-rounded d-flex justify-content-center mb-1 p-1">
+        <h2 style="color: #F0D745;"> Chats </h2>
+    </div>
+    <div class="chat-list">
+        @foreach (Chat chat in Model)
+        {
+            User opponent = await chatService.GetOpponent(chat, curUser);
+            string opponentAvatarImagePath = imageService.getUserImagePath(opponent);
+            <div class="chat text-light bg-dark mb-1 pl-3 p-1 border-block-rounded">
+                <a class="row text-light" asp-action="Index" asp-controller="Profile" asp-route-id="@opponent.Id">
+                    <img src="@Url.Content(opponentAvatarImagePath)" class="avatar-friend-list m-1 rounded-circle" />
+                    <h4 style="margin-top : 34px"> @opponent.UserInformation.FirstName @opponent.UserInformation.SecondName </h4>
+                </a>
+                <div class="row">
+                    <a class="btn btn-primary my-2 ml-2 mr-3 col-sm border-block-rounded" asp-action="Index" asp-controller="Chat"
+                       asp-route-userId="@opponent.Id">
+                        Write Message
+                    </a>
+                    <a class="btn btn-danger my-2 ml-2 mr-3 col-sm border-block-rounded" asp-action="Delete" asp-controller="Chat"
+                       asp-route-chatId="@chat.Id">
+                        Delete chat
+                    </a>
                 </div>
-            </a>
-            <div class="row">
-                <a class="btn btn-primary my-2 ml-2 mr-3 col-sm border-block-rounded" asp-action="Index" asp-controller="Chat"
-                   asp-route-userId="@opponent.Id">
-                    Write Message
-                </a>
-                <a class="btn btn-danger my-2 ml-2 mr-3 col-sm border-block-rounded" asp-action="Delete" asp-controller="Chat"
-                   asp-route-chatId="@chat.Id">
-                    Delete chat
-                </a>
             </div>
-        </div>
-    }
+        }
+    </div>
 </div>
 

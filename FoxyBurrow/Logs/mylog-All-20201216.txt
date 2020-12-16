@@ -139,3 +139,6 @@
 2020-12-16T03:07:32.6149965+03:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
 2020-12-16T03:07:32.6252680+03:00  [INF] Hosting environment: "Development" (c3307c92)
 2020-12-16T03:07:32.6272752+03:00  [INF] Content root path: "D:\aspnetcore\projects\FoxyBurrow\FoxyBurrow" (b5d60022)
+2020-12-16T03:15:25.2940235+03:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2020-12-16T03:15:25.3054091+03:00  [INF] Hosting environment: "Development" (c3307c92)
+2020-12-16T03:15:25.3074337+03:00  [INF] Content root path: "D:\aspnetcore\projects\FoxyBurrow\FoxyBurrow" (b5d60022)
