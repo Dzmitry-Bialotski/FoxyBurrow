@@ -90,7 +90,11 @@ namespace FoxyBurrow.Controllers
         public async Task<IActionResult> Delete(long id)
         {
             User user = await _userService.GetAsync(User);
-            _postService.Remove(id);
+            Post post = _postService.Get(id);
+            if(post.UserId == user.Id)
+            {
+                _postService.Remove(id);
+            }
             return RedirectToAction("Index", "Profile", new { id = user.Id});
         }
     }

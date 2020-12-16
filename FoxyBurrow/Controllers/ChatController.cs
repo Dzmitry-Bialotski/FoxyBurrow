@@ -32,9 +32,14 @@ namespace FoxyBurrow.Controllers
             List<Chat> chatList = _chatService.GetAll(user).ToList();
             return View(chatList);      
         }
-        public IActionResult Delete(long chatId)
+        public async  Task<IActionResult> Delete(long chatId)
         {
-            _chatService.Remove(chatId);
+            User curUser = await _userService.GetAsync(User);
+            Chat chat = _chatService.Get(chatId);
+            if(chat.FirstUserId == curUser.Id || chat.SecondUserId == curUser.Id)
+            {
+                _chatService.Remove(chatId);
+            }
             return RedirectToAction("List");
         }
     }
