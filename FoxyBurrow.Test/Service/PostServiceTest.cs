@@ -18,14 +18,18 @@ namespace FoxyBurrow.Test.Service
         private readonly EFDbContext DbContext;
         private readonly EFRepository<Post> repository;
         private readonly PostService postService;
+        private readonly EFRepository<Comment> crepository;
+        private readonly CommentService commentService;
 
         public PostServiceTest()
         {
             _configuration = new ConfigurationBuilder().Build();
             var builder = new DbContextOptionsBuilder<EFDbContext>().UseInMemoryDatabase(Guid.NewGuid().ToString());
             DbContext = new EFDbContext(builder.Options);
+            crepository = new EFRepository<Comment>(DbContext);
             repository = new EFRepository<Post>(DbContext);
-            postService = new PostService(repository);
+            commentService = new CommentService(crepository);
+            postService = new PostService(repository, commentService);
         }
 
         [Fact]
@@ -51,25 +55,6 @@ namespace FoxyBurrow.Test.Service
             var posts = postService.GetAll();
             Assert.NotNull(posts);
             Assert.Equal(10, posts.Count());
-        }
-
-        [Fact]
-        public void GetPostsByUserTest()
-        {
-            var user = new User { Email = "test@mail.ru", UserName = "test@maill.ru" };
-            DbContext.Users.Add(user);
-            for (int i = 1; i <= 10; i++)
-            {
-                DbContext.Posts.Add(new Post() { Id = i, Text = "Content", User = user });
-            }
-            DbContext.SaveChanges();
-            var posts = postService.GetAll(user);
-            Assert.NotNull(posts);
-            Assert.Equal(10, posts.Count());
-            for (int i = 0; i < posts.Count(); i++)
-            {
-                Assert.Equal(user, posts.ToArray()[i].User);
-            }
         }
 
         [Fact]
