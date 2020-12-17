@@ -30,8 +30,8 @@ namespace FoxyBurrow
                     RoleInitializer roleInitializer = new RoleInitializer();
                     await roleInitializer.InitializeAsync(userManager, rolesManager);
 
-                    DataInitializer dataInitializer = new DataInitializer();
-                    await dataInitializer.InitData(userManager, rolesManager);
+                    //DataInitializer dataInitializer = new DataInitializer();
+                    //await dataInitializer.InitData(userManager, rolesManager);
                 }
                 catch (Exception ex)
                 {
