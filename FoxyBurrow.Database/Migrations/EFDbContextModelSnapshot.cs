@@ -15,16 +15,16 @@ namespace FoxyBurrow.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseIdentityColumns()
+                .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.1");
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("FoxyBurrow.Core.Entity.Chat", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("FirstUserId")
                         .HasColumnType("nvarchar(450)");
@@ -46,7 +46,7 @@ namespace FoxyBurrow.Database.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("MessageDate")
                         .HasColumnType("datetime2");
@@ -74,7 +74,7 @@ namespace FoxyBurrow.Database.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<long>("ChatId")
                         .HasColumnType("bigint");
@@ -102,7 +102,7 @@ namespace FoxyBurrow.Database.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
@@ -128,7 +128,7 @@ namespace FoxyBurrow.Database.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("RequestType")
                         .HasColumnType("int");
@@ -161,8 +161,8 @@ namespace FoxyBurrow.Database.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
@@ -174,12 +174,12 @@ namespace FoxyBurrow.Database.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
 
                     b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -197,17 +197,17 @@ namespace FoxyBurrow.Database.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
+                        .HasName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
+                        .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
@@ -218,7 +218,7 @@ namespace FoxyBurrow.Database.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AboutMyself")
                         .HasColumnType("nvarchar(max)");
@@ -272,18 +272,18 @@ namespace FoxyBurrow.Database.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
 
                     b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
+                        .HasName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
@@ -294,7 +294,7 @@ namespace FoxyBurrow.Database.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -318,7 +318,7 @@ namespace FoxyBurrow.Database.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -402,10 +402,6 @@ namespace FoxyBurrow.Database.Migrations
                     b.HasOne("FoxyBurrow.Core.Entity.User", "SecondUser")
                         .WithMany()
                         .HasForeignKey("SecondUserId");
-
-                    b.Navigation("FirstUser");
-
-                    b.Navigation("SecondUser");
                 });
 
             modelBuilder.Entity("FoxyBurrow.Core.Entity.Comment", b =>
@@ -419,10 +415,6 @@ namespace FoxyBurrow.Database.Migrations
                     b.HasOne("FoxyBurrow.Core.Entity.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId");
-
-                    b.Navigation("Post");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FoxyBurrow.Core.Entity.Message", b =>
@@ -436,10 +428,6 @@ namespace FoxyBurrow.Database.Migrations
                     b.HasOne("FoxyBurrow.Core.Entity.User", "User")
                         .WithMany("Messages")
                         .HasForeignKey("UserId");
-
-                    b.Navigation("Chat");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FoxyBurrow.Core.Entity.Post", b =>
@@ -447,8 +435,6 @@ namespace FoxyBurrow.Database.Migrations
                     b.HasOne("FoxyBurrow.Core.Entity.User", "User")
                         .WithMany("Posts")
                         .HasForeignKey("UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FoxyBurrow.Core.Entity.Request", b =>
@@ -460,10 +446,6 @@ namespace FoxyBurrow.Database.Migrations
                     b.HasOne("FoxyBurrow.Core.Entity.User", "UserSender")
                         .WithMany("OutgoingRequests")
                         .HasForeignKey("UserSenderId");
-
-                    b.Navigation("UserReceiver");
-
-                    b.Navigation("UserSender");
                 });
 
             modelBuilder.Entity("FoxyBurrow.Core.Entity.UserInformation", b =>
@@ -471,8 +453,6 @@ namespace FoxyBurrow.Database.Migrations
                     b.HasOne("FoxyBurrow.Core.Entity.User", "User")
                         .WithOne("UserInformation")
                         .HasForeignKey("FoxyBurrow.Core.Entity.UserInformation", "UserId");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -524,31 +504,6 @@ namespace FoxyBurrow.Database.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("FoxyBurrow.Core.Entity.Chat", b =>
-                {
-                    b.Navigation("Messages");
-                });
-
-            modelBuilder.Entity("FoxyBurrow.Core.Entity.Post", b =>
-                {
-                    b.Navigation("Comments");
-                });
-
-            modelBuilder.Entity("FoxyBurrow.Core.Entity.User", b =>
-                {
-                    b.Navigation("Comments");
-
-                    b.Navigation("IncomingRequests");
-
-                    b.Navigation("Messages");
-
-                    b.Navigation("OutgoingRequests");
-
-                    b.Navigation("Posts");
-
-                    b.Navigation("UserInformation");
                 });
 #pragma warning restore 612, 618
         }
