@@ -34,7 +34,7 @@ hubConnection.on("ReceiveMessage", function (imagePath, messageText, messageDate
             p.textContent = messageText;
             var span = document.createElement("span");
             span.className = "time date-output";
-            var date = new Date(new Date(messageDate).getTime() - clientTimeZoneOffset * 60000).toLocaleString('en-US', options).replace(",", "");
+            var date = new Date(new Date(messageDate).getTime()/* - clientTimeZoneOffset * 60000*/).toLocaleString('en-US', options).replace(",", "");
             span.textContent = date;
 
             mess.appendChild(mess_img_block);
