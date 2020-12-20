@@ -33,8 +33,8 @@ hubConnection.on("ReceiveMessage", function (imagePath, messageText, messageDate
             var p = document.createElement("p");
             p.textContent = messageText;
             var span = document.createElement("span");
-            span.className = "time date-output";
-            var date = new Date(new Date(messageDate).getTime()/* - clientTimeZoneOffset * 60000*/).toLocaleString('en-US', options).replace(",", "");
+            span.className = "time";
+            var date = new Date(new Date(messageDate).getTime() - clientTimeZoneOffset * 60000).toLocaleString('en-US', options).replace(",", "");
             span.textContent = date;
 
             mess.appendChild(mess_img_block);
@@ -73,7 +73,7 @@ hubConnection.on("ReceiveMessage", function (imagePath, messageText, messageDate
             var p = document.createElement("p");
             p.textContent = messageText;
             var span = document.createElement("span");
-            span.className = "time date-output";
+            span.className = "time";
             var date = new Date(new Date(messageDate).getTime() - clientTimeZoneOffset * 60000).toLocaleString('en-US', options).replace(",", "");
             span.textContent = date;
 
