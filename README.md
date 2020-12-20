@@ -1,2 +1,2 @@
 # FoxyBurrow
-a social network using net5.0
+https://foxyburrow.azurewebsites.net/
