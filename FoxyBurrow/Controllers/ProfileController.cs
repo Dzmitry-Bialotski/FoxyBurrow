@@ -30,6 +30,7 @@ namespace FoxyBurrow.Controllers
 
         public async Task<IActionResult> IndexAsync(string id)
         {
+            //_logger.LogError("just check");
             User currentUser = await _userService.GetAsync(User);
             User user = id != null ? await _userService.GetAsyncWithPosts(id) 
                                    : await _userService.GetAsyncWithPosts(User);

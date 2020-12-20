@@ -11,9 +11,12 @@ namespace FoxyBurrow.Service.Util.Mail
     public class MailService : IMailService
     {
         private readonly IConfiguration _configuration;
-        public MailService(IConfiguration configuration)
+        private readonly IMessageGenerator _messageGenerator;
+        private readonly bool USE_SSL = true;
+        public MailService(IConfiguration configuration, IMessageGenerator messageGenerator)
         {
             _configuration = configuration;
+            _messageGenerator = messageGenerator;
         }
 
         public async Task SendToGmailConfirmLinkAsync(string email, string subject, string link)
@@ -30,13 +33,12 @@ namespace FoxyBurrow.Service.Util.Mail
             mailMessage.To.Add(new MailboxAddress("", email));
             mailMessage.Subject = subject;
             var bodyBuilder = new BodyBuilder();
-            bodyBuilder.HtmlBody = string.Format($@"<h3><p>Hi, That is FoxyBurrow Support team, that`s your confirmation link.</p>
-     <p><a href={link}> {link} </a></p>
-     <p>if you didn`t register in our site, please, tell us about that!</p></h3>", link);
+            bodyBuilder.HtmlBody = _messageGenerator.GenerateConfirmationMessage(link);
             mailMessage.Body = bodyBuilder.ToMessageBody();
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync("smtp.gmail.com", 465, true);
+                
+                await client.ConnectAsync(mailSection["EmailHost"], int.Parse(mailSection["EmailPort"]), USE_SSL);
 
                 await client.AuthenticateAsync(_mailAddress, _mailPassword);
 

@@ -32,8 +32,14 @@ namespace FoxyBurrow.Hubs
             {
                 return;
             }
-            long longChatId = Convert.ToInt64(chatId);
+            var curUser = await _userService.GetAsync(Context.User);
             User user = await _userService.GetAsync(userId);
+            if (user.Id != curUser.Id)
+            {
+                return;
+            }
+            long longChatId = Convert.ToInt64(chatId);
+
             string user_full_name = user.UserInformation.FirstName +" "+ user.UserInformation.SecondName;
             string imagePath = _imageService.getUserImagePath(user);
             //to make js load picture we have to remove "~/" from the begining of str

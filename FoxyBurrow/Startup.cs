@@ -33,6 +33,7 @@ namespace FoxyBurrow
         public void ConfigureServices(IServiceCollection services)
         {
             //Custom Service
+            services.AddSingleton<IMessageGenerator, MessageGenerator>();
             services.AddSingleton<IMailService, MailService>();
             services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
             services.AddTransient<IImageService, ImageService>();
@@ -81,9 +82,9 @@ namespace FoxyBurrow
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            var path = Directory.GetCurrentDirectory();
-            loggerFactory.AddFile($"{path}/Logs/mylog-All.txt", minimumLevel: LogLevel.Trace);
-            loggerFactory.AddFile($"{path}/Logs/mylog-Error.txt", minimumLevel: LogLevel.Error);
+            //var path = Directory.GetCurrentDirectory();
+            //loggerFactory.AddFile($"{path}/Logs/mylog-All.txt", minimumLevel: LogLevel.Trace);
+            //loggerFactory.AddFile($"{path}/Logs/mylog-Error.txt", minimumLevel: LogLevel.Error);
 
             if (env.IsDevelopment())
             {

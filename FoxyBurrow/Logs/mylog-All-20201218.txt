@@ -108,3 +108,6 @@ Error Number:40615,State:1,Class:14
 2020-12-18T12:24:12.7468333+03:00  [INF] Hosting environment: "Development" (c3307c92)
 2020-12-18T12:24:12.7488516+03:00  [INF] Content root path: "D:\aspnetcore\projects\FoxyBurrow\FoxyBurrow" (b5d60022)
 2020-12-18T12:24:25.4732074+03:00 800001c3-0003-f800-b63f-84710c7967bb [INF] user Dmitriy Belotskiy send message (a7527d39)
+2020-12-18T12:41:16.1682593+03:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2020-12-18T12:41:16.1882101+03:00  [INF] Hosting environment: "Development" (c3307c92)
+2020-12-18T12:41:16.1910317+03:00  [INF] Content root path: "D:\aspnetcore\projects\FoxyBurrow\FoxyBurrow" (b5d60022)

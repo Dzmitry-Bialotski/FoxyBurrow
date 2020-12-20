@@ -1,0 +1,7 @@
+2020-12-20T12:43:25.8838948+03:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2020-12-20T12:43:25.8953746+03:00  [INF] Hosting environment: "Development" (c3307c92)
+2020-12-20T12:43:25.8977791+03:00  [INF] Content root path: "D:\aspnetcore\projects\FoxyBurrow\FoxyBurrow" (b5d60022)
+2020-12-20T14:06:03.6502037+03:00  [INF] Application started. Press Ctrl+C to shut down. (dcaefe54)
+2020-12-20T14:06:03.6720445+03:00  [INF] Hosting environment: "Development" (c3307c92)
+2020-12-20T14:06:03.6767631+03:00  [INF] Content root path: "D:\aspnetcore\projects\FoxyBurrow\FoxyBurrow" (b5d60022)
+2020-12-20T14:06:04.1627544+03:00 80000108-0001-fb00-b63f-84710c7967bb [ERR] just check (81e75ed3)
